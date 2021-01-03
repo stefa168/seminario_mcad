@@ -1,0 +1,129 @@
+\documentclass{beamer}
+\usetheme{Madrid}
+
+\usepackage{adjustbox}
+\usepackage[absolute, overlay]{textpos}
+\usepackage[utf8]{inputenc}
+
+
+%Information to be included in the title page:
+\title{Impossibilita del consenso nel modello a rete asincrono, una soluzione randomizzata}
+\subtitle{Seminario 8}
+\author{Daniele Liberatore, Matteo Palazzo, \\ Stefano Porta, Alberto Mulone}
+\institute{Università degli Studi di Torino}
+\date{20 Gennaio 2021}
+
+\begin{document}
+
+\frame{\titlepage}
+
+\begin{frame}{Overview}
+    \tableofcontents
+\end{frame}
+
+% Capitolo 17
+
+\begin{frame}{Modello a rete asincrona}
+    
+\end{frame}
+
+\section{Da modello a rete al modello a memoria condivisa}
+
+\begin{frame}{Da modello a rete al modello a memoria condivisa}
+    \begin{block}{Perchè convertire un modello a rete in uno a memoria condivisa?}
+        \begin{itemize}
+            \item I sistemi a memoria condivisa sono di più facile comprensione e offrono una maggiore espressività.
+            \item Esistono numerosi algoritmi già sviluppati per i modelli a memoria condivisa.
+            \item Il modello a rete simula ed eredita le caratteristiche proprie di un sistema a memoria condivisa.
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\subsection{Il problema del consenso}
+
+\begin{frame}{Impossibilità del consenso nel modello a rete}
+
+    Il modello a rete eredita dal modello a memoria condivisa l'impossibilita del consenso.
+
+    \begin{block}{Teorema}
+        Dato un qualsiasi sistema asincrono a rete composto da un numero $n \geqslant 2$ di processi, non esiste un algoritmo che risolva del consenso e garantisca la \textit{1-failure termination}.
+    \end{block}
+\end{frame}
+
+\begin{frame}{Concetti chiave}
+    \begin{itemize}
+        \item Fault-tollerance %% Spiegare un evento di stop
+        \item I-simulazione
+    \end{itemize}    
+\end{frame}
+
+\begin{frame}{Fault-tollerance}
+    
+\end{frame}
+
+\begin{frame}{I-simulazione}
+    
+\end{frame}
+
+\begin{frame}{SimpSRSim}
+    
+\end{frame}
+
+\begin{frame}{SimBCast}
+
+\end{frame}
+
+% SimpSRSim
+% SimpBCastSim
+
+\subsection{Equivalenza del modello Send/Receive e il modello Broadcast}
+
+\begin{frame}{Equivalenza tra modello Send/Receive e Broadcast}
+    \begin{block}{Teorema}
+        Dato un generico sistema asincrono a rete broadcast A esiste un sistema asincrono send / receive B che è una I-simulazione di A.
+    \end{block}
+    
+    \vspace{0.5cm}
+    
+    Data questa equivalenza da ora in poi supporemo di lavorare in sistemi asincroni a rete broadcast, in quanto permettono la stesura di algoritmi più intuitivi e più facilmente dimostrabili.
+\end{frame}
+
+
+\begin{frame}{Impossibilità del consenso nel modello a rete}
+    \begin{block}{Dimostrazione}
+    \begin{itemize}
+        \item Supponiamo per \textbf{assurdo} che esista un algoritmo \texttt{A} in grado di risolvere il problema del consenso in un sistema asincrono a rete broadcast e che garantisca la 1-failure termination. 
+        \item Per quanto dimostrato è possibile ottenere un algoritmo B per un sistema a modello a memoria condivisa che è un n-simulazione di \texttt{A}. 
+        \item Pertanto \texttt{B} risolverebbe il problema del consenso garantendo la 1-failure termination. Questo però contraddice il teorema dell'impossibilità del consenso nel modello a memoria condivisa. 
+    \end{itemize}
+    \end{block}
+\end{frame}
+
+% Capitolo 21
+
+\section{Una soluzione randomizzata}
+
+\begin{frame}{Una soluzione randomizzata}
+    Poichè problema del consenso è di vitale importanze in diversi settori, come ad esempio la gestione di transazioni in database distribuiti; è stato necessario sviluppare degli espedienti:
+    \vspace{0.2cm}
+    \begin{itemize}
+        \item Indebolimento dei requisiti di correttezza
+        \item Rafforzamento del modello attraverso: 
+        \vspace{0.2cm}
+        \begin{itemize}
+            \item \textbf{Utilizzo della randomizzazione}
+            \item Failure detection
+            \item Consenso su un insieme di valori
+            \item Consenso parziale
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Requisiti di correttezza}
+
+\end{frame}
+
+\subsection{Algoritmo di BenOr}
+
+
+\end{document}
