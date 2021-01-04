@@ -24,7 +24,7 @@
 % Capitolo 17
 
 \begin{frame}{Modello a rete asincrona}
-    
+
 \end{frame}
 
 \section{Da modello a rete al modello a memoria condivisa}
@@ -39,6 +39,17 @@
     \end{block}
 \end{frame}
 
+\begin{frame}{Problema del consenso}
+    Un insieme di n utenti $U_{i}$ interagiscono con un sistema di n processi $P_{i}$ attraverso un certo modello di comunicazione, ogni utente $U_{i}$ inizializza con un certo valore \textit{v} il processo $P_{i}$ attraverso l'azione $init(v)_{i}$.
+    \\[10pt]
+    I processi $P_{i}$ interagiranno tra di loro per compiere una scelta unanime di un certo valore $v$ da comunicare agli utenti $U_{i}$ attraverso l'azione $decide(v)_{i}$.
+    
+    %%%%%%%%%%%%%%% COMMENTO %%%%%%%%%%%%%%%%%%%%%
+    \iffalse
+    Ogni processo può essere soggetto ad un \textbf{stopping failure}, ovvero può smettere di funzionare senza nessun avviso. Questo può essere modellato attraverso delle azioni di input chiamate $stop_{i}$ le quali non fanno altro che disabilitare ogni azione localmente controllata del processo $P_{i}$. Una esecuzione è detta failure-free se non contiene eventi di $stop$
+    \fi
+\end{frame}
+
 \subsection{Il problema del consenso}
 
 \begin{frame}{Impossibilità del consenso nel modello a rete}
@@ -46,27 +57,44 @@
     Il modello a rete eredita dal modello a memoria condivisa l'impossibilita del consenso.
 
     \begin{block}{Teorema}
-        Dato un qualsiasi sistema asincrono a rete composto da un numero $n \geqslant 2$ di processi, non esiste un algoritmo che risolva del consenso e garantisca la \textit{1-failure termination}.
+        Dato un qualsiasi sistema asincrono a rete composto da un numero $n \geq 2$ di processi, non esiste un algoritmo che risolva del consenso e garantisca la \textit{1-failure termination}.
     \end{block}
 \end{frame}
 
 \begin{frame}{Concetti chiave}
     \begin{itemize}
-        \item Fault-tollerance %% Spiegare un evento di stop
+        \item Fault-tolerance %% Spiegare un evento di stop
         \item I-simulazione
-    \end{itemize}    
+    \end{itemize}
 \end{frame}
 
-\begin{frame}{Fault-tollerance}
-    
+\begin{frame}{Fault-tolerance}
+    Un processo può fallire semplicemente stoppandosi in qualsiasi momento della sua esecuzione. Definiamo questo tipo di fallimento \textbf{stopping failure}. 
+    \\[10pt]
+    Un fallimento di questo tipo può essere modellato aggiungendo ad ogni processo $P_{i}$ un evento di input chiamato \textit{$stop_{i}$}, questo causa il fallimento del processo cambiandone lo stato e disabilitando tutti i suoi task. 
+    \\[10pt]
+    Un sistema A interfacciato verso gli utenti U è fault-tolerant rispetto a \textit{f} fallimenti se rispetta la seguente condizione liveness:
+    \begin{block}{f-failure termination}
+        Per ogni esecuzione del sistema composto $A \times U$ in cui occorrono degli eventi di stop su al più \textit{f} porte, ogni invocazione su una porta non-fallita ha una risposta.
+    \end{block}
+
 \end{frame}
 
 \begin{frame}{I-simulazione}
+    Un sistema B \textbf{simula} un sistema A se il suo comportamento è indistinguibile per un insieme di utenti esterni U.
+    
+    \begin{block}{I-simulazione}
+        Un sistema B composto da n processi $P_{i}$ con $1 \leq i \leq n$, è una I-simulazione di A se per ogni esecuzione $\alpha$ di B e per ogni collezione di utenti $U_{i}$, esiste una esecuzione $\alpha$' di A con gli stessi utenti per cui:
+        \begin{itemize}
+            \item $\alpha$ e $\alpha$' sono indistinguibili agli utenti U. % spiegare a voce cosa signigica indistinguibili
+            \item per ogni \textit{i} un evento $stop_{i}$ occorre in $\alpha$ se e solo se occorre in $\alpha$'
+        \end{itemize}
+    \end{block}
     
 \end{frame}
 
 \begin{frame}{SimpSRSim}
-    
+
 \end{frame}
 
 \begin{frame}{SimBCast}
@@ -82,9 +110,9 @@
     \begin{block}{Teorema}
         Dato un generico sistema asincrono a rete broadcast A esiste un sistema asincrono send / receive B che è una I-simulazione di A.
     \end{block}
-    
+
     \vspace{0.5cm}
-    
+
     Data questa equivalenza da ora in poi supporemo di lavorare in sistemi asincroni a rete broadcast, in quanto permettono la stesura di algoritmi più intuitivi e più facilmente dimostrabili.
 \end{frame}
 
@@ -92,9 +120,9 @@
 \begin{frame}{Impossibilità del consenso nel modello a rete}
     \begin{block}{Dimostrazione}
     \begin{itemize}
-        \item Supponiamo per \textbf{assurdo} che esista un algoritmo \texttt{A} in grado di risolvere il problema del consenso in un sistema asincrono a rete broadcast e che garantisca la 1-failure termination. 
-        \item Per quanto dimostrato è possibile ottenere un algoritmo B per un sistema a modello a memoria condivisa che è un n-simulazione di \texttt{A}. 
-        \item Pertanto \texttt{B} risolverebbe il problema del consenso garantendo la 1-failure termination. Questo però contraddice il teorema dell'impossibilità del consenso nel modello a memoria condivisa. 
+        \item Supponiamo per \textbf{assurdo} che esista un algoritmo \texttt{A} in grado di risolvere il problema del consenso in un sistema asincrono a rete broadcast e che garantisca la 1-failure termination.
+        \item Per quanto dimostrato è possibile ottenere un algoritmo B per un sistema a modello a memoria condivisa che è un n-simulazione di \texttt{A}.
+        \item Pertanto \texttt{B} risolverebbe il problema del consenso garantendo la 1-failure termination. Questo però contraddice il teorema dell'impossibilità del consenso nel modello a memoria condivisa.
     \end{itemize}
     \end{block}
 \end{frame}
@@ -108,8 +136,10 @@
     \vspace{0.2cm}
     \begin{itemize}
         \item Indebolimento dei requisiti di correttezza
-        \item Rafforzamento del modello attraverso: 
+        \item Rafforzamento del modello attraverso:
         \vspace{0.2cm}
+        
+        %%% ha senso ??? %%%
         \begin{itemize}
             \item \textbf{Utilizzo della randomizzazione}
             \item Failure detection
@@ -120,10 +150,35 @@
 \end{frame}
 
 \begin{frame}{Requisiti di correttezza}
+    Un sistema A risolve il problema del consenso se per ogni collezione di utenti U garantisce:
+    \begin{itemize}
+        \item \textbf{Well-formedness}: ogni interazione tra il sistema ed utenti $U_{i}$ è ben formata:
+        \begin{itemize}
+            \item Non contiene azioni ripetute di \textit{init},
+            \item Non contiene azioni ripetute di \textit{decide},
+            \item Ogni \textit{decide} è preceduto un \textit{init}.
+        \end{itemize}
+        \item \textbf{Agreement}: Tutti i valori di decisione sono uguali.
+        \item \textbf{Validity}: Se tutte le azioni di \textit{init} danno in input lo stesso valore \textit{v}, allora l'unico valore che può essere deciso è \textit{v}.
+        \item \textbf{Failure-free termination}: In ogni esecuzione failure-free in cui un \textit{init} è stata fatta su ciascuna porta, un evento \textit{decide} viene fatto su tutte le porte.
+    \end{itemize}
+\end{frame}
 
+\begin{frame}{Requisiti di terminazione}
+    Un sistema A composto da n processi $P_{i}$ è \textit{fault-tolerant}, rispetto a \textit{f} ($0 \leq f \leq n$) fallimenti, se soddisfa la seguente proprietà di terminazione: 
+    \begin{block}{f-failure termination}
+    In ogni esecuzione fair in cui degli eventi di \textit{init} occorrono su tutte le porte, se ci sono al più \textit{f} eventi di \textit{stop}, allora un evento di \textit{decide} occorre su tutte le porte non-fallite. 
+    \end{block}
+    % potremmo parlare di 1-failure termination e n-failure termination
 \end{frame}
 
 \subsection{Algoritmo di BenOr}
+\begin{frame}{Algoritmo di BenOr}
+    
+\end{frame}
 
+% dimostrazione benor 
+
+% simulazione benor
 
 \end{document}
