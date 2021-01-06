@@ -108,9 +108,27 @@
         \item In questo caso, per ogni \textit{i} con $1 \leq i \leq n$, il sistema \textit{B} ha una variabile condivisa $x(i)$ a singolo scrittore/multiplo lettore. 
         \newline La variabile è scrivibile da \textit{i} e leggibile da tutti i processi (\textit{i} incluso), e contiene una coda di messaggi, inizialmente vuota.
         \item Come con SimpleSRSim, un processo \textit{i} di \textit{B} simula direttamente il processo $P_{i}$ di \textit{A}.
-        \item Per simulare un'azione $bcast(m)_{i}$ di $P_{i}$, il processo \textit{i} di \textit{A} aggiunge il messaggio \textit{m} alla fine della coda presente nella variabile \textit{x(i)}.
-        \item Il processo \textit{i} periodicamente controlla tutte le variabili \textit{x(j)} (inclusa \textit{x(i)}), per verificare se sono presenti dei nuovi messaggi. Se effettivamente ve ne sono, li gestisce allo stesso modo di $P_{i}$.
     \end{itemize}
+\end{frame}
+
+\begin{frame}{SimpleBCastSim}
+    \begin{block}{Broadcast}
+        Per simulare un'azione $bcast(m)_{i}$ di $P_{i}$, il processo \textit{i} di \textit{A} aggiunge il messaggio \textit{m} alla fine della coda presente nella variabile \textit{x(i)}.
+        \begin{figure}
+            \centering
+            \includegraphics[scale=0.3]{Broadcast.png}
+        \end{figure} 
+    \end{block}
+\end{frame}
+
+\begin{frame}{SimpleBCastSim}
+    \begin{block}{Ricezione}
+        Il processo \textit{i} periodicamente controlla tutte le variabili \textit{x(j)} (inclusa \textit{x(i)}), per verificare se sono presenti dei nuovi messaggi. Se effettivamente ve ne sono, li gestisce allo stesso modo di $P_{i}$.
+        \begin{figure}
+            \centering
+            \includegraphics[scale=0.26]{BroadcastReceive.png}
+        \end{figure}
+    \end{block}
 \end{frame}
 
 % SimpSRSim
