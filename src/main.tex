@@ -44,10 +44,10 @@
 \begin{frame}{Modello a rete asincrono}
 \begin{textblock*}{\textwidth}(0mm, 12mm)
 \begin{itemize}
-    \item Un modello a rete di tipo send/receive è costituito da processi interconnessi tramite appositi canali.
+    \item Un modello a rete di tipo \textit{send/receive} è costituito da processi interconnessi tramite appositi canali.
     \item Per canale si intende una coda FIFO \textit{affidabile} (i.e. i messaggi ivi contenuti sono ordinati e non duplicati).
     \item Un processo invia un messaggio tramite l'apposita azione di output \texttt{send}, mentre la lettura avviene tramite l'azione di input \texttt{receive}.
-    \item Quando un singolo messaggio può essere inviato a molteplici destinatari si tratta di modello a rete \textit{broadcast}.
+    \item Quando un singolo messaggio può essere inviato a molteplici destinatari si parla di modello a rete \textit{broadcast}.
 \end{itemize}
 \end{textblock*}
 \begin{textblock*}{0.45\textwidth}(8mm, 60mm)
