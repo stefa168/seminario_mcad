@@ -41,8 +41,31 @@
 
 % Capitolo 17
 
-\begin{frame}{Modello a rete asincrona}
-
+\begin{frame}{Modello a rete asincrono}
+\begin{textblock*}{\textwidth}(0mm, 12mm)
+\begin{itemize}
+    \item Un modello a rete di tipo send/receive è costituito da processi interconnessi tramite appositi canali.
+    \item Per canale si intende una coda FIFO \textit{affidabile} (i.e. i messaggi ivi contenuti sono ordinati e non duplicati).
+    \item Un processo invia un messaggio tramite l'apposita azione di output \texttt{send}, mentre la lettura avviene tramite l'azione di input \texttt{receive}.
+    \item Quando un singolo messaggio può essere inviato a molteplici destinatari si tratta di modello a rete \textit{broadcast}.
+\end{itemize}
+\end{textblock*}
+\begin{textblock*}{0.45\textwidth}(8mm, 60mm)
+\begin{block}{}
+    \begin{figure}
+        \centering
+        \includegraphics[scale=0.4]{modello_a_rete.png}
+    \end{figure}
+    \end{block}
+\end{textblock*}
+\begin{textblock*}{0.3\textwidth}(75mm, 52.5mm)
+\begin{block}{}
+    \begin{figure}
+        \centering
+        \includegraphics[scale=0.4]{modello_a_rete_digrafo.png}
+    \end{figure}
+    \end{block}
+\end{textblock*}
 \end{frame}
 
 \section{Da modello a rete al modello a memoria condivisa}
@@ -58,7 +81,7 @@
 \end{frame}
 
 \begin{frame}{Problema del consenso}
-    Un insieme di n utenti $U_{i}$ interagiscono con un sistema di n processi $P_{i}$ attraverso un certo modello di comunicazione, ogni utente $U_{i}$ inizializza con un certo valore \textit{v} il processo $P_{i}$ attraverso l'azione $init(v)_{i}$.
+    Un insieme di $n$ utenti $U_{i}$ interagiscono con un sistema di n processi $P_{i}$ attraverso un certo modello di comunicazione, ogni utente $U_{i}$ inizializza con un certo valore \textit{v} il processo $P_{i}$ attraverso l'azione $init(v)_{i}$.
     \\[10pt]
     I processi $P_{i}$ interagiranno tra di loro per compiere una scelta unanime di un certo valore $v$ da comunicare agli utenti $U_{i}$ attraverso l'azione $decide(v)_{i}$.
     
@@ -123,6 +146,8 @@
     \begin{block}{Variabile condivisa single-reader/single-writer}
     \begin{figure}
         \centering
+        % Freccia tratteggiata: operazione di lettura
+        % Freccia non tratteggiata: operazione di scrittura
         \includegraphics[scale=0.4]{struttura_di_base.png}
     \end{figure}
     \end{block}
@@ -172,7 +197,7 @@
 
     \vspace{0.5cm}
 
-    Data questa equivalenza da ora in poi supporemo di lavorare in sistemi asincroni a rete broadcast, in quanto permettono la stesura di algoritmi più intuitivi e più facilmente dimostrabili.
+    Data questa equivalenza da ora in poi supporremo di lavorare in sistemi asincroni a rete broadcast, in quanto permettono la stesura di algoritmi più intuitivi e più facilmente dimostrabili.
 \end{frame}
 
 
