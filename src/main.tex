@@ -188,18 +188,18 @@
 \subsection{Algoritmo di BenOr}
 \begin{frame}{Algoritmo di BenOr}
     \begin{itemize}
-        \item L'algoritmo di BenOr funziona con $n < 3f$ processi e l'insieme dei valori di scelta sia $V = \{0, 1\}$.
+        \item L'algoritmo di BenOr funziona con $n < 3f$ processi e con l'insieme di valori di scelta $V = \{0, 1\}$.
         
         \item Ogni $P_{i}$ esegue una serie infinita di \textbf{stage} numerati in maniera incrementale ed ognuna di essa è divisa in due \textbf{round}.
         
         \item I processi nei vari stage si scambiano messaggi i quali contengono:
             \begin{itemize}
-                \item un tag che può essere o R (Report) o P (Propose),
-                \item un numero che indica la fase attuale, indicato con $k$,
+                \item un tag che può essere o R (Report) o P (Propose);
+                \item un numero che indica lo stage corrente, indicato con $s$;
                 \item un valore definito nel round indicato con $v$.
             \end{itemize}
             
-        \item Termina l'esecuzione delle fasi finché non si presenta una $decide(v)_{i}$.
+        \item L'algoritmo termina l'esecuzione degli stage finché non si presenta una $decide(v)_{i}$.
     \end{itemize}
 \end{frame}
 
@@ -209,16 +209,16 @@
         
         \item All'occorrenza di un input $init(v)_{i}$ sul processo $P_{i}$ viene assegnato ad $x$ il valore $v$ ($v \in V$).
         
-        \item La numerazione degli stage inizia con il valore 1.
+        \item La numerazione degli stage inizia con il valore 0 e viene incrementato all'inizio del round 1.
     \end{itemize}
 \end{frame}
 
 
 \begin{frame}{Algoritmo di BenOr - Round 1}
     \begin{itemize}
-        \item $P_{i}$ invia in broadcast agli altri processi un messaggio della forma (R, k, x). 
+        \item $P_{i}$ invia in broadcast agli altri processi un messaggio della forma (R, s, x). 
         
-        \item Successivamente attende di ricevere messaggi (R, k, *) da n - f processi\footnote{(* può essere 0 o 1)}.
+        \item Successivamente attende di ricevere messaggi (R, s, *) da n - f processi\footnote{(* può essere 0 o 1)}.
         
         \item Se tutti i messaggi ricevuti hanno lo stesso valore $v$ allora salva nella variabile $y$ il valore $v$.
             
@@ -231,9 +231,9 @@
 \begin{frame}{Algoritmo di BenOr - Round 2}
 
     \begin{itemize}
-        \item $P_{i}$ invia in broadcast agli altri processi un messaggio della forma (P, k, y).
+        \item $P_{i}$ invia in broadcast agli altri processi un messaggio della forma (P, s, y).
     
-        \item Successivamente attende di ricevere messaggi (P, k, *) da n - f processi\footnote{(* può essere 0 o 1 o null)}.
+        \item Successivamente attende di ricevere messaggi (P, s, *) da n - f processi\footnote{(* può essere 0 o 1 o null)}.
         
         \item Se tutti i messaggi ricevuti hanno lo stesso valore $v$ e $v$ diverso da null allora salva in $x$ il valore $v$ ed esegue l'azione $decide(v)_{i}$.
         
