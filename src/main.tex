@@ -188,7 +188,7 @@
 \subsection{Algoritmo di BenOr}
 \begin{frame}{Algoritmo di BenOr}
     \begin{itemize}
-        \item L'algoritmo di BenOr funziona con $n < 3f$ processi e con l'insieme di valori di scelta $V = \{0, 1\}$.
+        \item L'algoritmo di BenOr funziona con $n > 3f$ processi e con l'insieme di valori di scelta $V = \{0, 1\}$.
         
         \item Ogni $P_{i}$ esegue una serie infinita di \textbf{stage} numerati in maniera incrementale ed ognuna di essa è divisa in due \textbf{round}.
         
@@ -209,7 +209,7 @@
         
         \item All'occorrenza di un input $init(v)_{i}$ sul processo $P_{i}$ viene assegnato ad $x$ il valore $v$ ($v \in V$).
         
-        \item La numerazione degli stage inizia con il valore 0 e viene incrementato all'inizio del round 1.
+        \item La numerazione degli stage inizia con il valore 0 e viene incrementato all'inizio di ogni round 1.
     \end{itemize}
 \end{frame}
 
