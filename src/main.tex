@@ -13,9 +13,9 @@
 % \usepackage{tocloft}
 
 %Information to be included in the title page:
-\title[Seminario 8]{Impossibilita del consenso nel modello a rete asincrono, una soluzione randomizzata}
-\subtitle{Seminario 8}
-\author[Liberatore, Mulone, Palazzo, Porta]{Daniele Liberatore, Matteo Palazzo, \\ Stefano Porta, Alberto Mulone}
+\title[Seminario 8]{\textbf{Impossibilita del consenso nel modello a rete asincrono: una soluzione randomizzata}}
+\subtitle{\scriptsize \textit{Seminario 8}}
+\author[Liberatore, Mulone, Palazzo, Porta]{Daniele Liberatore, Alberto Mulone, \\ Matteo Palazzo, Stefano Porta}
 \institute[]{Università degli Studi di Torino}
 \date{20 Gennaio 2021}
 
@@ -111,19 +111,49 @@
     
 \end{frame}
 
-\begin{frame}{SimpleSRSim}
-\scalebox{0.5}{
-\vbox{%
+\begin{frame}{SimpleSRSim - 1}
+\begin{textblock*}{\textwidth}(0mm, 12mm)
     \begin{itemize}
         \item Supponiamo di voler creare un sistema asincrono a memoria condivisa $B$ che ne simuli uno a rete $A$.
-        \item Per ogni arco di $A$ che collega due processi $P_i$ e $P_j$, nel sistema B si crea una variabile condivisa $x(i, j)$ modificabile solamente da $P_i$ e leggibile esclusivamente da $P_j$\footnote{Si tratta di una variabile condivisa single-reader/single-writer}.
+        \item Per ogni arco di $A$ che collega due processi $P_i$ e $P_j$, nel sistema B si crea una variabile condivisa $x(i, j)$ modificabile solamente da $P_i$ e leggibile esclusivamente da $P_j$.%\footnote{Si tratta di una variabile condivisa single-reader/single-writer}
         \item Ogni variabile condivisa del tipo $x(i,j)$ contiene una propria coda di messaggi, utile per l’emulazione delle operazioni di base di un sistema a rete.
-        \item L'operazione $send(m)_{i, j}$ (i.e. invio del messaggio $m$ dal processo $i$ al processo $j$) viene simulata aggiungendo il messaggio $m$ al fondo della coda relativa alla variabile $x(i, j)$.
-        \item Per quanto riguarda la ricezione di messaggi, invece, il generico processo $i$, ciclicamente verifica la presenza di eventuali nuovi messaggi da parte di un qualche processo $j$ posti nella coda relativa alla variabile condivisa $x(j, i)$.
-        \item Il modo in cui il singolo processo elabora un certo messaggio $m$ rimane invariato.
     \end{itemize}
-    }
-}
+\end{textblock*}
+\begin{textblock*}{0.65\textwidth}(45mm, 50mm)
+    \begin{block}{Variabile condivisa single-reader/single-writer}
+    \begin{figure}
+        \centering
+        \includegraphics[scale=0.4]{struttura_di_base.png}
+    \end{figure}
+    \end{block}
+\end{textblock*}
+\end{frame}
+
+\begin{frame}{SimpleSRSim - 2}
+\begin{textblock*}{\textwidth}(0mm, 12mm)
+    \begin{itemize}
+        \item L'invio del messaggio $m$ dal processo $i$ al processo $j$ viene emulato aggiungendo il messaggio $m$ al fondo della coda contenuta in $x(i, j)$.
+        \item Un generico processo $i$ verifica ciclicamente la presenza di eventuali nuovi messaggi ricevuti da un qualche processo $j$ esaminando il contenuto della variabile $x(j, i)$.
+        \item L'elaborazione di un generico messaggio $m$ rimane invariata.
+    \end{itemize}
+\end{textblock*}
+\begin{textblock*}{0.4\textwidth}(8mm, 45mm)
+\begin{block}{Modello a rete}
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.4]{test_sr.png}
+\end{figure}
+\end{block}
+\end{textblock*}
+\begin{textblock*}{0.45\textwidth}(65mm, 45mm)
+
+\begin{block}{Modello a memoria condivisa}
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.4]{test_sm.png}
+\end{figure}
+\end{block}
+\end{textblock*}
 \end{frame}
 
 \begin{frame}{SimpleBCast}
