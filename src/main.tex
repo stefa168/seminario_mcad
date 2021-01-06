@@ -4,18 +4,36 @@
 \usepackage{adjustbox}
 \usepackage[absolute, overlay]{textpos}
 \usepackage[utf8]{inputenc}
-
+\usepackage{svg}
+\usepackage{adjustbox}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{transparent}
+\usepackage{caption}
+% \usepackage{tocloft}
 
 %Information to be included in the title page:
-\title{Impossibilita del consenso nel modello a rete asincrono, una soluzione randomizzata}
-\subtitle{Seminario 8}
-\author{Daniele Liberatore, Matteo Palazzo, \\ Stefano Porta, Alberto Mulone}
-\institute{Università degli Studi di Torino}
+\title[Seminario 8]{\textbf{Impossibilita del consenso nel modello a rete asincrono: una soluzione randomizzata}}
+\subtitle{\scriptsize \textit{Seminario 8}}
+\author[Liberatore, Mulone, Palazzo, Porta]{Daniele Liberatore, Alberto Mulone, \\ Matteo Palazzo, Stefano Porta}
+\institute[]{Università degli Studi di Torino}
 \date{20 Gennaio 2021}
 
 \begin{document}
-
-\frame{\titlepage}
+{
+    \beamertemplatenavigationsymbolsempty
+    \setbeamertemplate{footline}{}
+    \usebackgroundtemplate{
+        \adjustbox{trim=-8cm 0 0 -4.5cm}{
+            \transparent{0.3}\includesvg[scale=0.4,keepaspectratio=true]{unito-logo.svg}
+        }
+    }
+    \begin{frame}
+        \titlepage
+    \end{frame}
+    \addtocounter{framenumber}{-1}
+}
+% \frame{\titlepage}
 
 \begin{frame}{Overview}
     \tableofcontents
@@ -23,8 +41,31 @@
 
 % Capitolo 17
 
-\begin{frame}{Modello a rete asincrona}
-
+\begin{frame}{Modello a rete asincrono}
+\begin{textblock*}{\textwidth}(0mm, 12mm)
+\begin{itemize}
+    \item Un modello a rete di tipo \textit{send/receive} è costituito da processi interconnessi tramite appositi canali.
+    \item Per canale si intende una coda FIFO \textit{affidabile} (i.e. i messaggi ivi contenuti sono ordinati e non duplicati).
+    \item Un processo invia un messaggio tramite l'apposita azione di output \texttt{send}, mentre la lettura avviene tramite l'azione di input \texttt{receive}.
+    \item Quando un singolo messaggio può essere inviato a molteplici destinatari si parla di modello a rete \textit{broadcast}.
+\end{itemize}
+\end{textblock*}
+\begin{textblock*}{0.45\textwidth}(8mm, 60mm)
+\begin{block}{}
+    \begin{figure}
+        \centering
+        \includegraphics[scale=0.4]{modello_a_rete.png}
+    \end{figure}
+    \end{block}
+\end{textblock*}
+\begin{textblock*}{0.3\textwidth}(75mm, 52.5mm)
+\begin{block}{}
+    \begin{figure}
+        \centering
+        \includegraphics[scale=0.4]{modello_a_rete_digrafo.png}
+    \end{figure}
+    \end{block}
+\end{textblock*}
 \end{frame}
 
 \section{Da modello a rete al modello a memoria condivisa}
@@ -40,7 +81,7 @@
 \end{frame}
 
 \begin{frame}{Problema del consenso}
-    Un insieme di n utenti $U_{i}$ interagiscono con un sistema di n processi $P_{i}$ attraverso un certo modello di comunicazione, ogni utente $U_{i}$ inizializza con un certo valore \textit{v} il processo $P_{i}$ attraverso l'azione $init(v)_{i}$.
+    Un insieme di $n$ utenti $U_{i}$ interagiscono con un sistema di n processi $P_{i}$ attraverso un certo modello di comunicazione, ogni utente $U_{i}$ inizializza con un certo valore \textit{v} il processo $P_{i}$ attraverso l'azione $init(v)_{i}$.
     \\[10pt]
     I processi $P_{i}$ interagiranno tra di loro per compiere una scelta unanime di un certo valore $v$ da comunicare agli utenti $U_{i}$ attraverso l'azione $decide(v)_{i}$.
     
@@ -93,24 +134,55 @@
     
 \end{frame}
 
-\begin{frame}{SimpSRSim}
-
-\end{frame}
-
-\begin{frame}{SimpleBCastSim}
-    Se si ha a disposizione un canale broadcast affidabile, è possibile utilizzare una procedura simile a quella di \textit{SimpleSRSim} per simulare un sistema broadcast asincrono.
-    \\[10pt]
-    A differenza di \textit{SimpleSRSim}, che utilizza dei registri a scrittore/lettore singolo, \textit{SimpleBCastSim} si avvale di registri a singolo scrittore/multiplo lettore per la simulazione.
-\end{frame}
-
-\begin{frame}{SimpleBCastSim}
-    \begin{itemize}[<+->]
-        \item In questo caso, per ogni \textit{i} con $1 \leq i \leq n$, il sistema \textit{B} ha una variabile condivisa $x(i)$ a singolo scrittore/multiplo lettore. 
-        \newline La variabile è scrivibile da \textit{i} e leggibile da tutti i processi (\textit{i} incluso), e contiene una coda di messaggi, inizialmente vuota.
-        \item Come con SimpleSRSim, un processo \textit{i} di \textit{B} simula direttamente il processo $P_{i}$ di \textit{A}.
-        \item Per simulare un'azione $bcast(m)_{i}$ di $P_{i}$, il processo \textit{i} di \textit{A} aggiunge il messaggio \textit{m} alla fine della coda presente nella variabile \textit{x(i)}.
-        \item Il processo \textit{i} periodicamente controlla tutte le variabili \textit{x(j)} (inclusa \textit{x(i)}), per verificare se sono presenti dei nuovi messaggi. Se effettivamente ve ne sono, li gestisce allo stesso modo di $P_{i}$.
+\begin{frame}{SimpleSRSim - 1}
+\begin{textblock*}{\textwidth}(0mm, 12mm)
+    \begin{itemize}
+        \item Supponiamo di voler creare un sistema asincrono a memoria condivisa $B$ che ne simuli uno a rete $A$.
+        \item Per ogni arco di $A$ che collega due processi $P_i$ e $P_j$, nel sistema B si crea una variabile condivisa $x(i, j)$ modificabile solamente da $P_i$ e leggibile esclusivamente da $P_j$.%\footnote{Si tratta di una variabile condivisa single-reader/single-writer}
+        \item Ogni variabile condivisa del tipo $x(i,j)$ contiene una propria coda di messaggi, utile per l’emulazione delle operazioni di base di un sistema a rete.
     \end{itemize}
+\end{textblock*}
+\begin{textblock*}{0.65\textwidth}(45mm, 50mm)
+    \begin{block}{Variabile condivisa single-reader/single-writer}
+    \begin{figure}
+        \centering
+        % Freccia tratteggiata: operazione di lettura
+        % Freccia non tratteggiata: operazione di scrittura
+        \includegraphics[scale=0.4]{struttura_di_base.png}
+    \end{figure}
+    \end{block}
+\end{textblock*}
+\end{frame}
+
+\begin{frame}{SimpleSRSim - 2}
+\begin{textblock*}{\textwidth}(0mm, 12mm)
+    \begin{itemize}
+        \item L'invio del messaggio $m$ dal processo $i$ al processo $j$ viene emulato aggiungendo il messaggio $m$ al fondo della coda contenuta in $x(i, j)$.
+        \item Un generico processo $i$ verifica ciclicamente la presenza di eventuali nuovi messaggi ricevuti da un qualche processo $j$ esaminando il contenuto della variabile $x(j, i)$.
+        \item L'elaborazione di un generico messaggio $m$ rimane invariata.
+    \end{itemize}
+\end{textblock*}
+\begin{textblock*}{0.4\textwidth}(8mm, 45mm)
+\begin{block}{Modello a rete}
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.4]{test_sr.png}
+\end{figure}
+\end{block}
+\end{textblock*}
+\begin{textblock*}{0.45\textwidth}(65mm, 45mm)
+
+\begin{block}{Modello a memoria condivisa}
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.4]{test_sm.png}
+\end{figure}
+\end{block}
+\end{textblock*}
+\end{frame}
+
+\begin{frame}{SimpleBCast}
+
 \end{frame}
 
 % SimpSRSim
@@ -125,7 +197,7 @@
 
     \vspace{0.5cm}
 
-    Data questa equivalenza da ora in poi supporemo di lavorare in sistemi asincroni a rete broadcast, in quanto permettono la stesura di algoritmi più intuitivi e più facilmente dimostrabili.
+    Data questa equivalenza da ora in poi supporremo di lavorare in sistemi asincroni a rete broadcast, in quanto permettono la stesura di algoritmi più intuitivi e più facilmente dimostrabili.
 \end{frame}
 
 
@@ -186,7 +258,60 @@
 
 \subsection{Algoritmo di BenOr}
 \begin{frame}{Algoritmo di BenOr}
+    \begin{itemize}
+        \item L'algoritmo di BenOr funziona con $n > 3f$ processi e con l'insieme di valori di scelta $V = \{0, 1\}$.
+        
+        \item Ogni $P_{i}$ esegue una serie infinita di \textbf{stage} numerati in maniera incrementale ed ognuna di essa è divisa in due \textbf{round}.
+        
+        \item I processi nei vari stage si scambiano messaggi i quali contengono:
+            \begin{itemize}
+                \item un tag che può essere o R (Report) o P (Propose);
+                \item un numero che indica lo stage corrente, indicato con $s$;
+                \item un valore definito nel round indicato con $v$.
+            \end{itemize}
+            
+        \item L'algoritmo termina l'esecuzione degli stage finché non si presenta una $decide(v)_{i}$.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Algoritmo di BenOr - Inizializzazione}
+    \begin{itemize}
+        \item Ogni processo $P_{i}$ ha due variabili locali $x$ e $y$ inizializzate a $null$. 
+        
+        \item All'occorrenza di un input $init(v)_{i}$ sul processo $P_{i}$ viene assegnato ad $x$ il valore $v$ ($v \in V$).
+        
+        \item La numerazione degli stage inizia con il valore 0 e viene incrementato all'inizio di ogni round 1.
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Algoritmo di BenOr - Round 1}
+    \begin{itemize}
+        \item $P_{i}$ invia in broadcast agli altri processi un messaggio della forma \mbox{(R, s, x)}. 
+        
+        \item Successivamente attende di ricevere messaggi (R, s, ) da n - f processi\footnote{( può essere 0 o 1)}.
+        
+        \item Se tutti i messaggi ricevuti hanno lo stesso valore $v$ allora salva nella variabile $y$ il valore $v$.
+            
+        \item altrimenti salva in $y$ il valore null.
     
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Algoritmo di BenOr - Round 2}
+
+    \begin{itemize}
+        \item $P_{i}$ invia in broadcast agli altri processi un messaggio della forma \mbox{(P, s, y)}.
+    
+        \item Successivamente attende di ricevere messaggi (P, s, ) da n - f processi\footnote{( può essere 0 o 1 o null)}.
+        
+        \item Se tutti i messaggi ricevuti hanno lo stesso valore $v$ e $v$ diverso da null allora salva in $x$ il valore $v$ ed esegue l'azione $decide(v)_{i}$.
+        
+        \item altrimenti Se almeno $n - 2f$ messaggi ricevuti hanno lo stesso valore $v$ e $v$ diverso da null allora salva in $x$ il valore $v$.
+        
+        \item altrimenti viene assegnato ad $x$ un valore scelto randomicamente dall'insieme V.
+    \end{itemize}
 \end{frame}
 
 % dimostrazione benor 
