@@ -289,7 +289,7 @@
     \begin{itemize}
         \item $P_{i}$ invia in broadcast agli altri processi un messaggio della forma \mbox{(R, s, x)}. 
         
-        \item Successivamente attende di ricevere messaggi (R, s, ) da n - f processi\footnote{( può essere 0 o 1)}.
+        \item Successivamente attende di ricevere messaggi (R, s, *) da n - f processi\footnote{( può essere 0 o 1)}.
         
         \item Se tutti i messaggi ricevuti hanno lo stesso valore $v$ allora salva nella variabile $y$ il valore $v$.
             
@@ -304,7 +304,7 @@
     \begin{itemize}
         \item $P_{i}$ invia in broadcast agli altri processi un messaggio della forma \mbox{(P, s, y)}.
     
-        \item Successivamente attende di ricevere messaggi (P, s, ) da n - f processi\footnote{( può essere 0 o 1 o null)}.
+        \item Successivamente attende di ricevere messaggi (P, s, *) da n - f processi\footnote{( può essere 0 o 1 o null)}.
         
         \item Se tutti i messaggi ricevuti hanno lo stesso valore $v$ e $v$ diverso da null allora salva in $x$ il valore $v$ ed esegue l'azione $decide(v)_{i}$.
         
