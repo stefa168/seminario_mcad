@@ -258,7 +258,60 @@
 
 \subsection{Algoritmo di BenOr}
 \begin{frame}{Algoritmo di BenOr}
+    \begin{itemize}
+        \item L'algoritmo di BenOr funziona con $n > 3f$ processi e con l'insieme di valori di scelta $V = \{0, 1\}$.
+        
+        \item Ogni $P_{i}$ esegue una serie infinita di \textbf{stage} numerati in maniera incrementale ed ognuna di essa è divisa in due \textbf{round}.
+        
+        \item I processi nei vari stage si scambiano messaggi i quali contengono:
+            \begin{itemize}
+                \item un tag che può essere o R (Report) o P (Propose);
+                \item un numero che indica lo stage corrente, indicato con $s$;
+                \item un valore definito nel round indicato con $v$.
+            \end{itemize}
+            
+        \item L'algoritmo termina l'esecuzione degli stage finché non si presenta una $decide(v)_{i}$.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Algoritmo di BenOr - Inizializzazione}
+    \begin{itemize}
+        \item Ogni processo $P_{i}$ ha due variabili locali $x$ e $y$ inizializzate a $null$. 
+        
+        \item All'occorrenza di un input $init(v)_{i}$ sul processo $P_{i}$ viene assegnato ad $x$ il valore $v$ ($v \in V$).
+        
+        \item La numerazione degli stage inizia con il valore 0 e viene incrementato all'inizio di ogni round 1.
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Algoritmo di BenOr - Round 1}
+    \begin{itemize}
+        \item $P_{i}$ invia in broadcast agli altri processi un messaggio della forma \mbox{(R, s, x)}. 
+        
+        \item Successivamente attende di ricevere messaggi (R, s, ) da n - f processi\footnote{( può essere 0 o 1)}.
+        
+        \item Se tutti i messaggi ricevuti hanno lo stesso valore $v$ allora salva nella variabile $y$ il valore $v$.
+            
+        \item altrimenti salva in $y$ il valore null.
     
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Algoritmo di BenOr - Round 2}
+
+    \begin{itemize}
+        \item $P_{i}$ invia in broadcast agli altri processi un messaggio della forma \mbox{(P, s, y)}.
+    
+        \item Successivamente attende di ricevere messaggi (P, s, ) da n - f processi\footnote{( può essere 0 o 1 o null)}.
+        
+        \item Se tutti i messaggi ricevuti hanno lo stesso valore $v$ e $v$ diverso da null allora salva in $x$ il valore $v$ ed esegue l'azione $decide(v)_{i}$.
+        
+        \item altrimenti Se almeno $n - 2f$ messaggi ricevuti hanno lo stesso valore $v$ e $v$ diverso da null allora salva in $x$ il valore $v$.
+        
+        \item altrimenti viene assegnato ad $x$ un valore scelto randomicamente dall'insieme V.
+    \end{itemize}
 \end{frame}
 
 % dimostrazione benor 
