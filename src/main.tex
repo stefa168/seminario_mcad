@@ -90,7 +90,7 @@
 
         %%%%%%%%%%%%%%% COMMENTO %%%%%%%%%%%%%%%%%%%%%
         \iffalse
-        Ogni processo può essere soggetto ad un \textbf{stopping failure}, ovvero può smettere di funzionare senza nessun avviso. Questo può essere modellato attraverso delle azioni di input chiamate $stop_{i}$ le quali non fanno altro che disabilitare ogni azione localmente controllata del processo $P_{i}$. Una esecuzione è detta failure-free se non contiene eventi di $stop$
+        Ogni processo può essere soggetto a un \textbf{stopping failure}, ovvero può smettere di funzionare senza nessun avviso. Questo può essere modellato attraverso delle azioni di input chiamate $stop_{i}$ le quali non fanno altro che disabilitare ogni azione localmente controllata del processo $P_{i}$. Una esecuzione è detta failure-free se non contiene eventi di $stop$
         \fi
     \end{frame}
 
@@ -98,7 +98,7 @@
 
     \begin{frame}{Impossibilità del consenso nel modello a rete}
 
-        Il modello a rete eredita dal modello a memoria condivisa l'impossibilita del consenso.
+        Il modello a rete eredita dal modello a memoria condivisa l'impossibilità del consenso.
 
         \begin{block}{Teorema}
             Dato un qualsiasi sistema asincrono a rete composto da un numero $n \geq 2$ di processi, non esiste un algoritmo che risolva del consenso e garantisca la \textit{1-failure termination}.
@@ -115,7 +115,7 @@
     \begin{frame}{Fault-tolerance}
         Un processo può fallire semplicemente stoppandosi in qualsiasi momento della sua esecuzione. Definiamo questo tipo di fallimento \textbf{stopping failure}.
         \\[10pt]
-        Un fallimento di questo tipo può essere modellato aggiungendo ad ogni processo $P_{i}$ un evento di input chiamato \textit{$stop_{i}$}, questo causa il fallimento del processo cambiandone lo stato e disabilitando tutti i suoi task.
+        Un fallimento di questo tipo può essere modellato aggiungendo a ogni processo $P_{i}$ un evento di input chiamato \textit{$stop_{i}$}, questo causa il fallimento del processo cambiandone lo stato e disabilitando tutti i suoi task.
         \\[10pt]
         Un sistema A interfacciato verso gli utenti U è fault-tolerant rispetto a \textit{f} fallimenti se rispetta la seguente condizione liveness:
         \begin{block}{f-failure termination}
@@ -294,7 +294,7 @@
         \begin{itemize}
             \item L'algoritmo di BenOr funziona con $n > 3f$ processi e con l'insieme di valori di scelta $V = \{0, 1\}$.
 
-            \item Ogni $P_{i}$ esegue una serie infinita di \textbf{stage} numerati in maniera incrementale ed ognuna di essa è divisa in due \textbf{round}.
+            \item Ogni $P_{i}$ esegue una serie infinita di \textbf{stage} numerati in maniera incrementale e ognuna di essa è divisa in due \textbf{round}.
 
             \item I processi nei vari stage si scambiano messaggi i quali contengono:
             \begin{itemize}
@@ -343,7 +343,7 @@
 
             \item altrimenti Se almeno $n - 2f$ messaggi ricevuti hanno lo stesso valore $v$ e $v$ diverso da null allora salva in $x$ il valore $v$.
 
-            \item altrimenti viene assegnato ad $x$ un valore scelto randomicamente dall'insieme V.
+            \item altrimenti viene assegnato ad $x$ un valore scelto casualmente dall'insieme V.
         \end{itemize}
     \end{frame}
 
