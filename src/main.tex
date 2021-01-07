@@ -1,6 +1,8 @@
 \documentclass{beamer}
 \usetheme{Madrid}
 
+\usepackage{geometry}
+\usepackage{scrextend}
 \usepackage[absolute, overlay]{textpos}
 \usepackage[utf8]{inputenc}
 \usepackage{svg}
@@ -17,6 +19,13 @@
 \author[Liberatore, Mulone, Palazzo, Porta]{Daniele Liberatore, Alberto Mulone, \\ Matteo Palazzo, Stefano Porta}
 \institute[]{Università degli Studi di Torino}
 \date{20 Gennaio 2021}
+
+\hypersetup{
+  pdfauthor={Daniele Liberatore, Alberto Mulone, Stefano Porta, Matteo Palazzo},
+  pdftitle={Impossibilità del consenso nel modello a rete asincrono: una soluzione randomizzata},
+  pdfproducer={LaTeX with hyperref},
+  pdfcreator={latexmk}
+}
 
 \begin{document}
 {
@@ -365,7 +374,7 @@
     Dimostriamo che l'algoritmo BenOr risolve il problema del consenso.
     
     \begin{block}{Lemma}
-        L'algoritmo BenOr garantisce la well-formedness, l'agreement.
+        L'algoritmo BenOr garantisce la well-formedness, l'agreement e la validity.
     \end{block}
 \end{frame}
 
@@ -415,18 +424,18 @@
         \setcounter{enumi}{3}
         \item Abbiamo quindi due alternative per ogni altro processo $P_{j}$ che completa lo stage $s$:
         \begin{itemize}
-            \item $P_{j}$ ha ricevuto $n - f$ messaggi ("second", s, v) contenenti lo stesso valore $v$.
+            \item $P_{j}$ ha ricevuto $n - f$ messaggi ("P", s, v) contenenti lo stesso valore $v$.
             \begin{addmargin}[1em]{2em}
-            $\implies$ $P_{j}$ decide $v$ e manda a tutti ("first", s, v). 
+            $\implies$ $P_{j}$ decide $v$ e manda a tutti ("R", s, v). 
             \end{addmargin}
             
-            \item $P_{j}$ ha ricevuto $n - 2f \leq k < n - f$ messaggi ("second", s, v) contenenti lo stesso valore $v$.
+            \item $P_{j}$ ha ricevuto $n - 2f \leq k < n - f$ messaggi ("P", s, v) contenenti lo stesso valore $v$.
             \begin{addmargin}[1em]{2em}
-            $\implies$ $P_{j}$ setta $x := v$ e manda a tutti ("first", s, v). 
+            $\implies$ $P_{j}$ setta $x := v$ e manda a tutti ("R", s, v). 
             \end{addmargin}
         \end{itemize}
         
-        In ogni caso allo stage successivo $s + 1$ tutti i processo riceveranno almeno $n - f$ messaggi ("first", s + 1, v) e invieranno pertanto un messaggio ("second", s + 1, v), di conseguenza tutti i processi riceveranno $n - f$ messagi ("second", s + 1, v) e decideranno quindi v.
+        In ogni caso allo stage successivo $s + 1$ tutti i processo riceveranno almeno $n - f$ messaggi ("R", s + 1, v) e invieranno pertanto un messaggio ("P", s + 1, v), di conseguenza tutti i processi riceveranno $n - f$ messagi ("P", s + 1, v) e decideranno quindi v.
     \end{enumerate}
 \end{frame}
 
@@ -461,7 +470,7 @@
     \end{block}
 \end{frame}
 
-\begin{frame}{Dimostrazione (1/?)}
+\begin{frame}{Dimostrazione (1/8)}
     Se $s = 0$ allora la dimostrazione è banale infatti si ha che:
     \vspace{0.3cm}
     \begin{center}
@@ -473,7 +482,7 @@
     I.e., si sta dicendo che ogni processo termina con probabilità $p \geq 0$, il che è ovvio.
 \end{frame}
 
-\begin{frame}{Dimostrazione (2/?)}
+\begin{frame}{Dimostrazione (2/8)}
     Consideriamo ora il caso $s \geq 1$. \newline
     Dimostriamo innanzitutto che alla fine dello stage s, ogni processo imposta \textit{x} allo stesso valore \textit{v} con una probabilità $p \geq \frac{1}{2^n}$. 
     \begin{enumerate}
@@ -487,7 +496,7 @@
     \end{enumerate}
 \end{frame}
 
-\begin{frame}{Dimostrazione (3/?): Un solo valore buono}
+\begin{frame}{Dimostrazione (3/8): Un solo valore buono}
     \begin{enumerate}
         \setcounter{enumi}{3}
         \item<1-> Nel caso in cui \underline{$P_{i}$ ha ricevuto un solo valore \textit{buono} \textit{v}}, ogni altro processo $P_{j}$ avrà ricevuto almeno 1 ($f + 1 - f = 1$) messaggi del tipo ("R", s, v).
@@ -496,7 +505,7 @@
     \end{enumerate}
 \end{frame}
 
-\begin{frame}{Dimostrazione (4/?): Un solo valore buono}
+\begin{frame}{Dimostrazione (4/8): Un solo valore buono}
     \begin{enumerate}
         \setcounter{enumi}{6}
         \item<1-> Nel momento in cui un processo $P_{j}$ riceve $n - f$ messaggi ("P", s, v) allora, o avrà ricevuto almeno $n - 2f$ messaggi contenenti il valore \textit{buono} $v$ e imposterà $x$ a $v$, oppure ne avrà ricevuti di meno e sceglierà il valore di $x$ in manierò random.
@@ -504,7 +513,7 @@
     \end{enumerate}
 \end{frame}
 
-\begin{frame}{Dimostrazione (5/?): Due valori buoni}
+\begin{frame}{Dimostrazione (5/8): Due valori buoni}
     \begin{enumerate}
         \setcounter{enumi}{8}
         \item<1-> Nel caso in cui \underline{$P_{i}$ ha ricevuto due valori \textit{buoni}}, ogni altro processo $P_{j}$ avrà ricevuto almeno 1 messaggio del tipo ("R", s, 0) e almeno 1 messaggio del tipo ("R", s, 0).
@@ -513,7 +522,7 @@
     \end{enumerate}
 \end{frame}
 
-\begin{frame}{Dimosrtazione (6/?)}
+\begin{frame}{Dimostrazione (6/8)}
     \begin{enumerate}
         \setcounter{enumi}{11}
         \item<1-> Ogni processo riceverà quindi unicamente messaggi del tipo ("P", s, \textit{null}), dovendo quindi impostare il valore di \textit{x} in maniera random.
@@ -521,7 +530,7 @@
     \end{enumerate}
 \end{frame}
 
-\begin{frame}{Dimosrtazione (7/?)}
+\begin{frame}{Dimostrazione (7/8)}
     \begin{enumerate}
         \setcounter{enumi}{13}
         \item Abbiamo quindi dimostrato che in entrambi i casi alla fine dello stage \textit{s}, con probabilità $p \geq \frac{1}{2^n}$, ogni processo imposta \textit{x} allo stesso valore \textit{v}.
@@ -531,7 +540,7 @@
     \end{enumerate}
 \end{frame}
 
-\begin{frame}{Dimosrtazione (8/?)}
+\begin{frame}{Dimostrazione (8/8)}
     \begin{enumerate}
         \setcounter{enumi}{17}
         \item Se tutti i processi impostano lo stesso valore per \textit{x} alla fine di uno stage \textit{s}, allora per definizione dell'algoritmo tutti i processi \textit{decideranno} quel valore di \textit{x} alla fine dello stage $s + 1$.
@@ -553,5 +562,27 @@
     Questo vuol dire che al crescere del numero di stage la probabilità di scegliere un valore entro lo stage successivo aumenta. \newline \newline
     E all'infinito questo valore diventa pari a 1. Ovvero si ha che con probabilità 1, eventualmente tutti i processi decidono.
 \end{frame}
+
+{
+    \beamertemplatenavigationsymbolsempty
+    \setbeamertemplate{footline}{}
+    \usebackgroundtemplate{
+        \adjustbox{trim=-8cm 0 0 -4.5cm}{
+            \transparent{0.3}\includesvg[scale=0.4,keepaspectratio=true]{unito-logo.svg}
+        }
+    }
+    \begin{frame}{Ringraziamenti}
+    \begin{textblock*}{\textwidth}(5mm, 32mm)
+        \Huge Grazie per l'attenzione!
+    \end{textblock*}
+    \begin{textblock*}{0.6\textwidth}(5mm, 75mm)
+        \begin{block}{Riferimenti bibliografici:}
+            \tiny Nancy A. Lynch, \textit{Distributed Algorithms}, 1996 \\
+            Marcos Kawazoe Aguilera e Sam Toueg, \textit{Correctness Proof of Ben-Or’s Randomized Consensus Algorithm}, 1998
+        \end{block}
+    \end{textblock*}
+    \end{frame}
+    \addtocounter{framenumber}{-1}
+}
 
 \end{document}
