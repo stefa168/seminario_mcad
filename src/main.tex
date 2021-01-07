@@ -351,4 +351,205 @@
 
 % simulazione benor
 
+\begin{frame}{Considerazioni}
+    Vedere pagina 673 prima dell'algoritmo.
+    
+    INSERIRE IL TEOREMA 21.7
+    
+    VEDERE SE RIFORMULARLO IN TERMINI DI NUMERI DI STAGE O IN TERMINI DI TEMPO.
+\end{frame}
+
+\begin{frame}{Dimostrazione Correttezza}
+    Dimostriamo che l'algoritmo BenOr risolve il problema del consenso.
+    
+    \begin{block}{Lemma}
+        L'algoritmo BenOr garantisce la well-formedness, l'agreement.
+    \end{block}
+\end{frame}
+
+\begin{frame}{Dimostrazione Correttezza (Well-formedness) (1/2)} %1
+    Va dimostrato che per ogni esecuzione:
+    \begin{enumerate}
+        \item Non esistono azioni ripetute $init(v)_{i}$, ovvero che ogni processo viene inizializzato al più una volta.
+        \item Non esistono azioni ripetute $decide(v)_{i}$, ovvero che ogni processo decide al più una volta.
+        \item Ogni $decide(k)_{i}$ è preceduta da una $init(v)_{i}$.
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}{Dimostrazione Correttezza (Well-formedness) (2/2)} %2
+    \textbf{Dimostrazione:}
+    \begin{enumerate}
+        \item Ogni utente può fare al più una azione di init.
+        \item Sebbene i processi continuino la loro esecuzione anche dopo aver deciso un valore, per definizione ogni processo eseguira l'azione di decide una sola volta.
+        \item Un processo non inizia la sua esecuzione finchè non riceve un'azione di init. Di conseguenza non può esistere una esecuzione che contenga una decide prima di una init.
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}{Dimostrazione Correttezza (Validity)}
+    Va dimostrato che se ogni processo è inizializzato allo stesso valore \textit{v}, allora \textit{v} è l'unico valore di decisione possibile.
+    \newline \newline
+    \textbf{Dimostrazione:}
+    \begin{enumerate}
+        \item<1-> Per ipotesi tutte le azioni $init(v)_{i}$ vengono fatte con lo stesso valore $v$.
+        \item<2-> Pertanto nel round di report dello stage 1 tutti i processi invieranno lo stesso messaggio {("R", 1, v)}.
+        \item<3-> Segue quindi che tutti i processi riceverann almeno $n - f$ messaggi \mbox{("R", 1, v)}, di consequenza ogni processo invierà un messaggio \mbox{("P", 1, v)}.
+        \item<4-> Concludendo tutti i processi riceveranno allora $n - f$ messaggi \mbox{("P", 1, v)} decidendo dunque il valore $v$.
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}{Dimostrazione Correttezza (Agreement) (3/3)}
+    Va dimostrato che tutti i valori di decisione sono uguali.\newline
+    \textbf{Dimostrazione:}
+    \begin{enumerate}
+        \item<1-> Supponiamo che $P_{i}$ decide un certo valore $v$ nello stage $s$, e che sia il primo processo a eseguire una decisione.
+        \item<2-> Ciò implica che $P_{i}$ abbia ricetuto $n - f$ mesaggi del tipo \mbox{("P", s, v)}.
+        \item<3-> Pertanto ogni altro processo $P_{j}$ che completa lo stage $s$, avrà ricevuto almeno $n - 2f$
+        messaggi, questo perchè riceverà gli stessi $n - f$ messaggi che ha ricevuto $P_{i}$, tolti al più $f$ messaggi, nel caso in cui $f$ processi falliscano dopo aver inviato il messaggio a $P_{i}$. Si noti che $n - 2f = (n - f) - f$
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}{Dimostrazione Correttezza (Agreement) (2/2)}
+    \begin{enumerate}
+        \setcounter{enumi}{3}
+        \item Abbiamo quindi due alternative per ogni altro processo $P_{j}$ che completa lo stage $s$:
+        \begin{itemize}
+            \item $P_{j}$ ha ricevuto $n - f$ messaggi ("second", s, v) contenenti lo stesso valore $v$.
+            \begin{addmargin}[1em]{2em}
+            $\implies$ $P_{j}$ decide $v$ e manda a tutti ("first", s, v). 
+            \end{addmargin}
+            
+            \item $P_{j}$ ha ricevuto $n - 2f \leq k < n - f$ messaggi ("second", s, v) contenenti lo stesso valore $v$.
+            \begin{addmargin}[1em]{2em}
+            $\implies$ $P_{j}$ setta $x := v$ e manda a tutti ("first", s, v). 
+            \end{addmargin}
+        \end{itemize}
+        
+        In ogni caso allo stage successivo $s + 1$ tutti i processo riceveranno almeno $n - f$ messaggi ("first", s + 1, v) e invieranno pertanto un messaggio ("second", s + 1, v), di conseguenza tutti i processi riceveranno $n - f$ messagi ("second", s + 1, v) e decideranno quindi v.
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}{Prerequisiti per la terminazione}
+    MOLTO PROBABILMENTE SI PUO' TOGLIERE A SECONDA DI COME FORMULI LA TERMINAZIONE.
+    OVVERO SE LA SI PONE IN TERMINI DI TEMPO E' NECESSARIA, SE LA SI PONE IN TERMINI DI STAGE ALLORA LA SI PU0' TOGLIERE
+    Per dimostrare la terminazione (\textit{probabilistica}) dell'algoritmo è necessario assumere le seguenti ipotesi:  
+    \begin{itemize}
+        \item Ogni esecuzione sia fair.
+        \item Ogni task di ogni processo è completato entro un tempo massimo \textit{l}.
+        \item Ogni messaggio è consegnato entro un tempo massimo \textit{d}.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Confine superiore al tempo di completamento di uno stage}
+    MOLTO PROBABILMENTE SI PUO' TOGLIERE A SECONDA DI COME FORMULI LA TERMINAZIONE.
+    OVVERO SE LA SI PONE IN TERMINI DI TEMPO E' NECESSARIA, SE LA SI PONE IN TERMINI DI STAGE ALLORA LA SI PU0' TOGLIERE
+    Possiamo innanzituto dimostrare che:
+    \begin{block}{Lemma}
+        In ogni esecuzione fair dell'algoritmo BenOr in cui un'evento di \textit{init} occorre su tutte le porte, ogni processo non guasto completa un numero infinito di stage.\newline
+        Inoltre, sia \textit{l} un confine superiore al tempo di completamento di ogni task dei processi, e \textit{d} un confine superiore al tempo di consegna di ogni messaggio; allora ogni processo non guasto completa ogni stage entro un tempo $O(s(d+l))$, calcolato a partire dall'ultimo evento di \textit{init}.
+    \end{block}
+\end{frame}
+
+\begin{frame}{Probabilità di terminazione}
+    \begin{block}{Lemma}
+        Per ogni stage \textit{s}, tutti i processi decideranno entro lo stage successivo $s+1$ con probabilità almeno:
+        \begin{center}
+        \huge
+            $1 - (1-\frac{1}{2^n})^s$
+        \end{center}
+    \end{block}
+\end{frame}
+
+\begin{frame}{Dimostrazione (1/?)}
+    Se $s = 0$ allora la dimostrazione è banale infatti si ha che:
+    \vspace{0.3cm}
+    \begin{center}
+        \Large
+        $1 - (1 - \frac{1}{2^n})^s = 1 - (1 - \frac{1}{2^n})^0 = 1 - 1 = 0$
+    \end{center}
+    \normalsize
+    \vspace{0.3cm}
+    I.e., si sta dicendo che ogni processo termina con probabilità $p \geq 0$, il che è ovvio.
+\end{frame}
+
+\begin{frame}{Dimostrazione (2/?)}
+    Consideriamo ora il caso $s \geq 1$. \newline
+    Dimostriamo innanzitutto che alla fine dello stage s, ogni processo imposta \textit{x} allo stesso valore \textit{v} con una probabilità $p \geq \frac{1}{2^n}$. 
+    \begin{enumerate}
+        \item<1-> Sia $\alpha$ l'esecuzione più corta per cui un processo $P_{i}$ ha ricevuto $n - f$ messaggi ("R", s, *).
+        \item<2-> Se almeno $f + 1$ di questi messaggi contengono lo stesso valore \textit{v}, allora diciamo che \textit{v} è un valore \textit{buono} per $\alpha$. 
+        \item<3-> Sono possibili due casi:
+        \begin{itemize}%!!!!! DA RIELABORARE QUESTO PUNTO
+            \item E' presente un solo valore \textit{buono}, i.e., $P_{i}$ ha ricevuto o almeno $f + 1$ \mbox{("R", s, 0)} oppure almeno $f + 1$ ("R", s, 1).
+            \item Sono presenti due valori \textit{buoni}, i.e., $P_{i}$ ha ricevuto almeno $f + 1$ \mbox{("R", s, 0)} e almeno $f + 1$ ("R", s, 1).
+        \end{itemize}
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}{Dimostrazione (3/?): Un solo valore buono}
+    \begin{enumerate}
+        \setcounter{enumi}{3}
+        \item<1-> Nel caso in cui \underline{$P_{i}$ ha ricevuto un solo valore \textit{buono} \textit{v}}, ogni altro processo $P_{j}$ avrà ricevuto almeno 1 ($f + 1 - f = 1$) messaggi del tipo ("R", s, v).
+        \item<2-> Non appena $P_{j}$ avrà ricevuto $n - f$ messaggi ("R", s, *), non potrà inviare un messagio del tipo ("P", s, $\overline{v}$), in quanto per definizione può farlo solamente se ha rivecuto esattamente $n - f$ copie di $\overline{v}$, ma per quanto detto soprà sappiamo che ciò è impossibile in quanto tra gli $n - f$ messaggi che ha ricevuto contengono almeno 1 copia di $v$.
+        \item<3-> Pertanto ogni messaggio ("P", s, *) che verrà inviato conterrà o il valore \textit{v} oppure \textit{null}.
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}{Dimostrazione (4/?): Un solo valore buono}
+    \begin{enumerate}
+        \setcounter{enumi}{6}
+        \item<1-> Nel momento in cui un processo $P_{j}$ riceve $n - f$ messaggi ("P", s, v) allora, o avrà ricevuto almeno $n - 2f$ messaggi contenenti il valore \textit{buono} $v$ e imposterà $x$ a $v$, oppure ne avrà ricevuti di meno e sceglierà il valore di $x$ in manierò random.
+        \item<2-> La probabilità che tutti i processi che scelgono in maniera random, scelgano lo stesso valore $v$ è: $\geq (\frac{1}{2})^n$, in quanto ogni processo ha probabilita $\frac{1}{2}$ di scegliere il valore $v$.  
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}{Dimostrazione (5/?): Due valori buoni}
+    \begin{enumerate}
+        \setcounter{enumi}{8}
+        \item<1-> Nel caso in cui \underline{$P_{i}$ ha ricevuto due valori \textit{buoni}}, ogni altro processo $P_{j}$ avrà ricevuto almeno 1 messaggio del tipo ("R", s, 0) e almeno 1 messaggio del tipo ("R", s, 0).
+        \item<2-> Non appena $P_{j}$ avrà ricevuto $n - f$ messaggi ("R", s, *), non potrà inviare un nè messagi del tipo ("P", s, 0), nè messagi del tipo ("P", s, 1).
+        \item<3-> Pertanto ogni messaggio ("P", s, *) che verrà inviato conterrà o il valore \textit{null}.
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}{Dimosrtazione (6/?)}
+    \begin{enumerate}
+        \setcounter{enumi}{11}
+        \item<1-> Ogni processo riceverà quindi unicamente messaggi del tipo ("P", s, \textit{null}), dovendo quindi impostare il valore di \textit{x} in maniera random.
+        \item<2-> Anche in questo caso la probabilità che tutti i processi impostino \textit{x} allo stesso valore è: $\geq (\frac{1}{2})^n$.
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}{Dimosrtazione (7/?)}
+    \begin{enumerate}
+        \setcounter{enumi}{13}
+        \item Abbiamo quindi dimostrato che in entrambi i casi alla fine dello stage \textit{s}, con probabilità $p \geq \frac{1}{2^n}$, ogni processo imposta \textit{x} allo stesso valore \textit{v}.
+        \item Per \textbf{negazione} si ha che la probabilità \textit{p} che \textbf{non} venga scelto un valore unico per \textit{x} è $p \leq 1 - \frac{1}{2^n}$.
+        \item Poichè la le scelte che vengono fatte in uno stage sono \textbf{indipendenti} tra di loro abbiamo che, la probabilità \textit{p} che non venga scelto un valore unico per \textit{x} nei primi \textit{s} stage è: $p \leq (1 - \frac{1}{2^n})^s$
+        \item Ancora una volta per \textbf{negazione} si ha che la probabilità \textit{p} che venga scelto un valore uni per \textit{x} entro lo stage \textit{s} è: $p \geq 1 - (1 - \frac{1}{2^n})^s$ 
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}{Dimosrtazione (8/?)}
+    \begin{enumerate}
+        \setcounter{enumi}{17}
+        \item Se tutti i processi impostano lo stesso valore per \textit{x} alla fine di uno stage \textit{s}, allora per definizione dell'algoritmo tutti i processi \textit{decideranno} quel valore di \textit{x} alla fine dello stage $s + 1$.
+        \item Per quanto detto prima la probabilità \textit{p} che venga scelto un valore uni per \textit{x} entro lo stage \textit{s} è: $p \geq 1 - (1 - \frac{1}{2^n})^s$. 
+        \item Dunque la probabilità di decidere un valore entro lo stage $s + 1$ è:
+        \begin{center}
+            \Large
+            $p \geq 1 - (1 - \frac{1}{2^n})^s$.
+        \end{center}
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}{Terminazione con probabilità 1}
+    E' facile vedere che:
+    \begin{center}
+        \Large
+        $\lim_{s\to\infty} 1 - (1 - \frac{1}{2^n})^s = 1$
+    \end{center}
+    Questo vuol dire che al crescere del numero di stage la probabilità di scegliere un valore entro lo stage successivo aumenta. \newline \newline
+    E all'infinito questo valore diventa pari a 1. Ovvero si ha che con probabilità 1, eventualmente tutti i processi decidono.
+\end{frame}
+
 \end{document}
