@@ -82,7 +82,8 @@
                 \item Un processo invia un messaggio tramite l'apposita azione di output \texttt{send}, mentre la lettura avviene tramite l'azione di input \texttt{receive}.
                 \item Quando un singolo messaggio può essere inviato a molteplici destinatari si parla di modello a rete \textit{broadcast}.
             \end{itemize}
-        \end{textblock*}
+        \end{textblock*} 
+
         \begin{textblock*}{0.45\textwidth}
             (8mm, 60mm)
             \begin{block}{}
@@ -372,11 +373,9 @@
 % simulazione benor
 
 \begin{frame}{Considerazioni}
-    Vedere pagina 673 prima dell'algoritmo.
-    
-    INSERIRE IL TEOREMA 21.7
-    
-    VEDERE SE RIFORMULARLO IN TERMINI DI NUMERI DI STAGE O IN TERMINI DI TEMPO.
+    \begin{block}{Teorema}
+        L'algoritmo di BenOr garantisce le proprietà di well-formdness, validity e agreement. Inoltre viene garantita con probabilità 1 che tutti i processi non-falliti prima o poi decidono.
+    \end{block}
 \end{frame}
 
 \subsection{Dimostrazione correttezza}
@@ -573,6 +572,23 @@
     Questo vuol dire che al crescere del numero di stage la probabilità di scegliere un valore entro lo stage successivo aumenta. \newline \newline
     E all'infinito questo valore diventa pari a 1. Ovvero si ha che con probabilità 1, eventualmente tutti i processi decidono.
 \end{frame}
+
+\begin{frame}{\textit{Quasi certo} VS \textit{Certo}}
+    Si noti che probabilità 1 non vuol dire certezza. Infatti la probabilità di terminazione è pari a 1 solo dopo un numero \textbf{infinito} di stage \textit{s}. Quindi possiamo solo essere sicuri che prima o poi accadra solo se supponiamo di poter aspettare tempi infiniti.
+    
+\end{frame}
+
+\begin{frame}{Un esecuzione (finita) senza decisioni}
+    Possiamo immaginare un'esecuzione fair del BenOr relativa a $3f+1$ in cui nessuno di questi decide; affinche ciò accada in ogni stage \textit{s} deve accadere che:
+    \begin{itemize}
+        \item \textit{m} processi, con $f+1 \leq m \leq 2f$, presentano $x = 0$ mentre i rimanenti hanno $x = 1$.
+        \item Al termine della fase di Report, tutti i processi avranno $y = null$ %spiegare a voce perchè
+        \item Nella fase di Propose assegneranno a \textit{x} un nuovo valore randomico.
+        \item \textit{m} processi assegnano $x = 0$ e i rimanenti assegnano $x = 1$
+    \end{itemize}
+    Nello stage $s + 1$ si ritorna quindi nella situazione iniziale, che potrebbe pertanto ripetersi un numero considerevole di volte.
+\end{frame}
+
 
 {
     \beamertemplatenavigationsymbolsempty
