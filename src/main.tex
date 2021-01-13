@@ -18,13 +18,34 @@
 \subtitle{\scriptsize \textit{Seminario 8}}
 \author[Liberatore, Mulone, Palazzo, Porta]{Daniele Liberatore, Alberto Mulone, \\ Matteo Palazzo, Stefano Porta}
 \institute[]{Università degli Studi di Torino}
-\date{20 Gennaio 2021}
+\date{20 gennaio 2021}
 
 \hypersetup{
-  pdfauthor={Daniele Liberatore, Alberto Mulone, Stefano Porta, Matteo Palazzo},
+  pdfauthor={Daniele Liberatore, Alberto Mulone, Matteo Palazzo, Stefano Porta},
   pdftitle={Impossibilità del consenso nel modello a rete asincrono: una soluzione randomizzata},
   pdfproducer={LaTeX with hyperref},
   pdfcreator={latexmk}
+}
+
+\iffalse
+\AtBeginSection[]{
+  \begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}\insertsectionhead\par%
+  \end{beamercolorbox}
+  \vfill
+  \end{frame}
+}
+\fi
+
+\AtBeginSection[]
+{
+    \begin{frame}
+        \frametitle{Overview}
+        \tableofcontents[currentsection]
+    \end{frame}
 }
 
 \begin{document}
@@ -43,12 +64,15 @@
 }
 % \frame{\titlepage}
 
+    \iffalse
     \begin{frame}{Overview}
         \tableofcontents
     \end{frame}
+    \fi
 
 % Capitolo 17
 
+    \section{Introduzione}
     \begin{frame}{Modello a rete asincrono}
         \begin{textblock*}{\textwidth}
             (0mm, 12mm)
@@ -79,50 +103,6 @@
         \end{textblock*}
     \end{frame}
 
-
-    \section{Da modello a rete al modello a memoria condivisa}
-
-    \begin{frame}{Da modello a rete al modello a memoria condivisa}
-        \begin{block}{Perché convertire un modello a rete in uno a memoria condivisa?}
-            \begin{itemize}
-                \item I sistemi a memoria condivisa sono di più facile comprensione e offrono una maggiore espressività.
-                \item Esistono numerosi algoritmi già sviluppati per i modelli a memoria condivisa.
-                \item Il modello a rete simula ed eredita le caratteristiche proprie di un sistema a memoria condivisa.
-            \end{itemize}
-        \end{block}
-    \end{frame}
-
-    \begin{frame}{Problema del consenso}
-        Un insieme di $n$ utenti $U_{i}$ interagiscono con un sistema di n processi $P_{i}$ attraverso un certo modello di comunicazione, ogni utente $U_{i}$ inizializza con un certo valore \textit{v} il processo $P_{i}$ attraverso l'azione $init(v)_{i}$.
-        \\[10pt]
-        I processi $P_{i}$ interagiranno tra di loro per compiere una scelta unanime di un certo valore $v$ da comunicare agli utenti $U_{i}$ attraverso l'azione $decide(v)_{i}$.
-
-        %%%%%%%%%%%%%%% COMMENTO %%%%%%%%%%%%%%%%%%%%%
-        \iffalse
-        Ogni processo può essere soggetto a un \textbf{stopping failure}, ovvero può smettere di funzionare senza nessun avviso. Questo può essere modellato attraverso delle azioni di input chiamate $stop_{i}$ le quali non fanno altro che disabilitare ogni azione localmente controllata del processo $P_{i}$. Una esecuzione è detta failure-free se non contiene eventi di $stop$
-        \fi
-    \end{frame}
-
-    \subsection{Il problema del consenso}
-
-    \begin{frame}{Impossibilità del consenso nel modello a rete}
-
-        Il modello a rete eredita dal modello a memoria condivisa l'impossibilità del consenso.
-
-        \begin{block}{Teorema}
-            Dato un qualsiasi sistema asincrono a rete composto da un numero $n \geq 2$ di processi, non esiste un algoritmo che risolva il problema del consenso e garantisca la \textit{1-failure termination}.
-        \end{block}
-    \end{frame}
-
-    \iffalse
-    \begin{frame}{Concetti chiave}
-        \begin{itemize}
-            \item Fault-tolerance %% Spiegare un evento di stop
-            \item I-simulazione
-        \end{itemize}
-    \end{frame}
-    \fi
-
     \begin{frame}{Fault-tolerance}
         Un processo può fallire semplicemente stoppandosi in qualsiasi momento della sua esecuzione. Definiamo questo tipo di fallimento \textbf{stopping failure}.
         \\[10pt]
@@ -133,6 +113,17 @@
             Per ogni esecuzione del sistema composto $A \times U$ in cui occorrono degli eventi di stop su al più \textit{f} porte, ogni invocazione su una porta non-fallita ha una risposta.
         \end{block}
 
+    \end{frame}
+
+    \section{Da modello a rete al modello a memoria condivisa}
+    \begin{frame}{Da modello a rete al modello a memoria condivisa}
+        \begin{block}{Perché convertire un modello a rete in uno a memoria condivisa?}
+            \begin{itemize}
+                \item I sistemi a memoria condivisa sono di più facile comprensione e offrono una maggiore espressività.
+                \item Esistono numerosi algoritmi già sviluppati per i modelli a memoria condivisa.
+                \item Il modello a rete simula ed eredita le caratteristiche proprie di un sistema a memoria condivisa.
+            \end{itemize}
+        \end{block}
     \end{frame}
 
     \begin{frame}{I-simulazione}
@@ -148,6 +139,7 @@
 
     \end{frame}
 
+    \subsection{Equivalenza tra modello a rete e a memoria condivisa}
     \begin{frame}{SimpleSRSim - 1}
         \begin{textblock*}{\textwidth}
             (0mm, 12mm)
@@ -231,8 +223,6 @@
 % SimpSRSim
 % SimpBCastSim
 
-    \subsection{Equivalenza del modello Send/Receive e il modello Broadcast}
-
     \begin{frame}{Equivalenza tra modello Send/Receive e Broadcast}
         \begin{block}{Teorema}
             Dato un generico sistema asincrono a rete broadcast A esiste un sistema asincrono send / receive B che è una I-simulazione di A.
@@ -243,15 +233,34 @@
         Data questa equivalenza da ora in poi supporremo di lavorare in sistemi asincroni a rete broadcast, in quanto permettono la stesura di algoritmi più intuitivi e più facilmente dimostrabili.
     \end{frame}
 
+    \begin{frame}{Problema del consenso}
+        Un insieme di $n$ utenti $U_{i}$ interagiscono con un sistema di n processi $P_{i}$ attraverso un certo modello di comunicazione, ogni utente $U_{i}$ inizializza con un certo valore \textit{v} il processo $P_{i}$ attraverso l'azione $init(v)_{i}$.
+        \\[10pt]
+        I processi $P_{i}$ interagiranno tra di loro per compiere una scelta unanime di un certo valore $v$ da comunicare agli utenti $U_{i}$ attraverso l'azione $decide(v)_{i}$.
+
+        %%%%%%%%%%%%%%% COMMENTO %%%%%%%%%%%%%%%%%%%%%
+        \iffalse
+        Ogni processo può essere soggetto a un \textbf{stopping failure}, ovvero può smettere di funzionare senza nessun avviso. Questo può essere modellato attraverso delle azioni di input chiamate $stop_{i}$ le quali non fanno altro che disabilitare ogni azione localmente controllata del processo $P_{i}$. Una esecuzione è detta failure-free se non contiene eventi di $stop$
+        \fi
+    \end{frame}
+
+    \subsection{Il problema del consenso}
 
     \begin{frame}{Impossibilità del consenso nel modello a rete}
-        \begin{block}{Dimostrazione}
-            \begin{itemize}
-                \item Supponiamo per \textbf{assurdo} che esista un algoritmo \texttt{A} in grado di risolvere il problema del consenso in un sistema asincrono a rete broadcast e che garantisca la 1-failure termination.
-                \item Per quanto dimostrato è possibile ottenere un algoritmo B per un sistema a modello a memoria condivisa che è un n-simulazione di \texttt{A}.
-                \item Pertanto \texttt{B} risolverebbe il problema del consenso garantendo la 1-failure termination. Questo però contraddice il teorema dell'impossibilità del consenso nel modello a memoria condivisa.
-            \end{itemize}
+
+        Il modello a rete eredita dal modello a memoria condivisa l'impossibilità del consenso.
+
+        \begin{block}{Teorema}
+            Dato un qualsiasi sistema asincrono a rete composto da un numero $n \geq 2$ di processi, non esiste un algoritmo che risolva il problema del consenso e garantisca la \textit{1-failure termination}.
         \end{block}
+    \end{frame}
+
+    \begin{frame}{Dimostrazione}
+        \begin{itemize}
+            \item Supponiamo per \textbf{assurdo} che esista un algoritmo \texttt{A} in grado di risolvere il problema del consenso in un sistema asincrono a rete broadcast e che garantisca la 1-failure termination.
+            \item Per quanto dimostrato è possibile ottenere un algoritmo B per un sistema a modello a memoria condivisa che è un n-simulazione di \texttt{A}.
+            \item Pertanto \texttt{B} risolverebbe il problema del consenso garantendo la 1-failure termination. Questo però contraddice il teorema dell'impossibilità del consenso nel modello a memoria condivisa.
+        \end{itemize}
     \end{frame}
 
 % Capitolo 21
@@ -370,6 +379,7 @@
     VEDERE SE RIFORMULARLO IN TERMINI DI NUMERI DI STAGE O IN TERMINI DI TEMPO.
 \end{frame}
 
+\subsection{Dimostrazione correttezza}
 \begin{frame}{Dimostrazione Correttezza}
     Dimostriamo che l'algoritmo BenOr risolve il problema del consenso.
     
@@ -408,7 +418,7 @@
     \end{enumerate}
 \end{frame}
 
-\begin{frame}{Dimostrazione Correttezza (Agreement) (3/3)}
+\begin{frame}{Dimostrazione Correttezza (Agreement) (1/2)}
     Va dimostrato che tutti i valori di decisione sono uguali.\newline
     \textbf{Dimostrazione:}
     \begin{enumerate}
@@ -439,6 +449,7 @@
     \end{enumerate}
 \end{frame}
 
+\subsection{Dimostrazione terminazione}
 \begin{frame}{Prerequisiti per la terminazione}
     MOLTO PROBABILMENTE SI PUO' TOGLIERE A SECONDA DI COME FORMULI LA TERMINAZIONE.
     OVVERO SE LA SI PONE IN TERMINI DI TEMPO E' NECESSARIA, SE LA SI PONE IN TERMINI DI STAGE ALLORA LA SI PU0' TOGLIERE
