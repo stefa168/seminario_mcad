@@ -469,17 +469,6 @@
 \end{frame}
 
 \subsection{Dimostrazione terminazione}
-\begin{frame}{Prerequisiti per la terminazione}
-    MOLTO PROBABILMENTE SI PUO' TOGLIERE A SECONDA DI COME FORMULI LA TERMINAZIONE.
-    OVVERO SE LA SI PONE IN TERMINI DI TEMPO E' NECESSARIA, SE LA SI PONE IN TERMINI DI STAGE ALLORA LA SI PU0' TOGLIERE
-    Per dimostrare la terminazione (\textit{probabilistica}) dell'algoritmo è necessario assumere le seguenti ipotesi:  
-    \begin{itemize}
-        \item Ogni esecuzione sia fair.
-        \item Ogni task di ogni processo è completato entro un tempo massimo \textit{l}.
-        \item Ogni messaggio è consegnato entro un tempo massimo \textit{d}.
-    \end{itemize}
-\end{frame}
-
 \iffalse
 \begin{frame}{Confine superiore al tempo di completamento di uno stage}
     MOLTO PROBABILMENTE SI PUO' TOGLIERE A SECONDA DI COME FORMULI LA TERMINAZIONE.
@@ -494,10 +483,10 @@
 
 \begin{frame}{Probabilità di terminazione}
     \begin{block}{Lemma}
-        Per ogni stage \textit{s}, tutti i processi decideranno entro lo stage successivo $s+1$ con probabilità almeno:
+        Per ogni stage \textit{s}, tutti i processi decideranno entro lo stage successivo $s+1$ con una probabilità \textit{p} tale che:
         \begin{center}
         \huge
-            $1 - (1-\frac{1}{2^n})^s$
+            $p \geq 1 - (1-\frac{1}{2^n})^s$
         \end{center}
     \end{block}
 \end{frame}
@@ -568,7 +557,7 @@
         \item Abbiamo quindi dimostrato che in entrambi i casi alla fine dello stage \textit{s}, con probabilità $p \geq \frac{1}{2^n}$, ogni processo imposta \textit{x} allo stesso valore \textit{v}.
         \item Per \textbf{negazione} si ha che la probabilità \textit{p} che \textbf{non} venga scelto un valore unico per \textit{x} è $p \leq 1 - \frac{1}{2^n}$.
         \item Poichè la le scelte che vengono fatte in uno stage sono \textbf{indipendenti} tra di loro abbiamo che, la probabilità \textit{p} che non venga scelto un valore unico per \textit{x} nei primi \textit{s} stage è: $p \leq (1 - \frac{1}{2^n})^s$
-        \item Ancora una volta per \textbf{negazione} si ha che la probabilità \textit{p} che venga scelto un valore uni per \textit{x} entro lo stage \textit{s} è: $p \geq 1 - (1 - \frac{1}{2^n})^s$ 
+        \item Ancora una volta per \textbf{negazione} si ha che la probabilità \textit{p} che venga scelto un valore unico per \textit{x} entro lo stage \textit{s} è: $p \geq 1 - (1 - \frac{1}{2^n})^s$ 
     \end{enumerate}
 \end{frame}
 
@@ -591,8 +580,8 @@
         \Large
         $\lim_{s\to\infty} 1 - (1 - \frac{1}{2^n})^s = 1$
     \end{center}
-    Questo vuol dire che al crescere del numero di stage la probabilità di scegliere un valore entro lo stage successivo aumenta. \newline \newline
-    E all'infinito questo valore diventa pari a 1. Ovvero si ha che con probabilità 1, eventualmente tutti i processi decidono.
+    Questo vuol dire che al crescere del numero di stage la probabilità di decidere un valore entro lo stage $s+1$. \newline \newline
+    All'infinito questo valore diventa pari a 1. Ovvero si ha che con probabilità 1, prima o poi tutti i processi decidono.
 \end{frame}
 
 {
