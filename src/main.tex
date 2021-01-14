@@ -131,7 +131,7 @@
         Un sistema B \textbf{simula} un sistema A se il suo comportamento è indistinguibile per un insieme di utenti esterni U.
 
         \begin{block}{I-simulazione}
-            Un sistema B composto da n processi $P_{i}$ con $1 \leq i \leq n$, è una I-simulazione di A se per ogni esecuzione $\alpha$ di B e per ogni collezione di utenti $U_{i}$, esiste una esecuzione $\alpha'$ di A con gli stessi utenti per cui:
+            Un sistema B composto da n processi $P_{i}$ con $1 \leq i \leq n$, è una I-simulazione (dove I indica un determinato insieme di porte) di A se per ogni esecuzione $\alpha$ di B e per ogni collezione di utenti $U_{i}$, esiste una esecuzione $\alpha'$ di A con gli stessi utenti per cui:
             \begin{itemize}
                 \item $\alpha$ e $\alpha'$ sono indistinguibili agli utenti U. % spiegare a voce cosa signigica indistinguibili
                 \item per ogni \textit{i} un evento $stop_{i}$ occorre in $\alpha$ se e solo se occorre in $\alpha'$
@@ -195,7 +195,7 @@
 
     \begin{frame}{SimpleBCastSim - 1}
         \begin{itemize}[<+->]
-            \item In questo caso, per ogni \textit{i} con $1 \leq i \leq n$, il sistema \textit{B} ha una variabile condivisa $x(i)$ a singolo scrittore/multiplo lettore.
+            \item In questo caso, per ogni \textit{i} con $1 \leq i \leq n$, il sistema \textit{B} ha una variabile condivisa $x(i)$ a singolo scrittore/multipli lettori.
             \newline La variabile è scrivibile da \textit{i} e leggibile da tutti i processi (\textit{i} incluso), e contiene una coda di messaggi, inizialmente vuota.
             \item Come con SimpleSRSim, un processo \textit{i} di \textit{B} simula direttamente il processo $P_{i}$ di \textit{A}.
         \end{itemize}
@@ -324,7 +324,7 @@
                 \item un valore definito nel round indicato con $v$.
             \end{itemize}
 
-            \item L'algoritmo termina l'esecuzione degli stage finché non si presenta una $decide(v)_{i}$.
+            \item L'algoritmo continua la propria esecuzione anche dopo aver effettuato una $decide(v)_i$.
         \end{itemize}
     \end{frame}
 
@@ -360,11 +360,11 @@
 
             \item Successivamente attende di ricevere messaggi (P, s, *) da n - f processi\footnote{Il valore indicato da * può essere 0, 1 o null}.
 
-            \item Se tutti i messaggi ricevuti hanno lo stesso valore $v$ e $v$ diverso da null allora salva in $x$ il valore $v$ ed esegue l'azione $decide(v)_{i}$.
+            \item Se tutti i messaggi ricevuti hanno lo stesso valore $v$ e $v$ diverso da null allora salva in $x$ il valore $v$ ed esegue l'azione $decide(v)_{i}$ (se non è già stato fatto in uno stage precedente).
 
             \item altrimenti Se almeno $n - 2f$ messaggi ricevuti hanno lo stesso valore $v$ e $v$ diverso da null allora salva in $x$ il valore $v$.
 
-            \item altrimenti viene assegnato ad $x$ un valore scelto casualmente dall'insieme V.
+            \item altrimenti viene assegnato ad $x$ un valore scelto \underline{casualmente}\footnote{Quest'azione rende probabilistico l'intero algoritmo.} dall'insieme V.
         \end{itemize}
     \end{frame}
 
@@ -376,6 +376,11 @@
     \begin{block}{Teorema}
         L'algoritmo di BenOr garantisce le proprietà di well-formdness, validity e agreement. Inoltre viene garantita con probabilità 1 che tutti i processi non-falliti prima o poi decidono.
     \end{block}
+\end{frame}
+
+\subsection{Simulazione}
+\begin{frame}{Simulazione}
+    % Simulazione
 \end{frame}
 
 \subsection{Dimostrazione correttezza}
@@ -448,6 +453,21 @@
     \end{enumerate}
 \end{frame}
 
+\begin{frame}{\textit{Quasi certo} VS \textit{Certo}}
+    Si noti che probabilità 1 non vuol dire certezza. In seguito dimostreremo che la probabilità di terminazione tende a 1 solo dopo un numero \textbf{infinito} di stage \textit{s}. Quindi possiamo solo essere sicuri che prima o poi accadrà solo se supponiamo di poter aspettare tempi infiniti.
+\end{frame}
+
+\begin{frame}{Un esecuzione (finita) senza decisioni}
+    Possiamo immaginare un'esecuzione fair del BenOr relativa a $3f+1$ in cui nessuno di questi decide; affinche ciò accada in ogni stage \textit{s} deve accadere che:
+    \begin{itemize}
+        \item \textit{m} processi, con $f+1 \leq m \leq 2f$, presentano $x = 0$ mentre i rimanenti hanno $x = 1$.
+        \item Al termine della fase di Report, tutti i processi avranno $y = null$ %spiegare a voce perchè
+        \item Nella fase di Propose assegneranno a \textit{x} un nuovo valore randomico.
+        \item \textit{m} processi assegnano $x = 0$ e i rimanenti assegnano $x = 1$
+    \end{itemize}
+    Nello stage $s + 1$ si ritorna quindi nella situazione iniziale, che potrebbe pertanto ripetersi un numero considerevole di volte.
+\end{frame}
+
 \subsection{Dimostrazione terminazione}
 \begin{frame}{Prerequisiti per la terminazione}
     MOLTO PROBABILMENTE SI PUO' TOGLIERE A SECONDA DI COME FORMULI LA TERMINAZIONE.
@@ -460,6 +480,7 @@
     \end{itemize}
 \end{frame}
 
+\iffalse
 \begin{frame}{Confine superiore al tempo di completamento di uno stage}
     MOLTO PROBABILMENTE SI PUO' TOGLIERE A SECONDA DI COME FORMULI LA TERMINAZIONE.
     OVVERO SE LA SI PONE IN TERMINI DI TEMPO E' NECESSARIA, SE LA SI PONE IN TERMINI DI STAGE ALLORA LA SI PU0' TOGLIERE
@@ -469,6 +490,7 @@
         Inoltre, sia \textit{l} un confine superiore al tempo di completamento di ogni task dei processi, e \textit{d} un confine superiore al tempo di consegna di ogni messaggio; allora ogni processo non guasto completa ogni stage entro un tempo $O(s(d+l))$, calcolato a partire dall'ultimo evento di \textit{init}.
     \end{block}
 \end{frame}
+\fi
 
 \begin{frame}{Probabilità di terminazione}
     \begin{block}{Lemma}
@@ -572,23 +594,6 @@
     Questo vuol dire che al crescere del numero di stage la probabilità di scegliere un valore entro lo stage successivo aumenta. \newline \newline
     E all'infinito questo valore diventa pari a 1. Ovvero si ha che con probabilità 1, eventualmente tutti i processi decidono.
 \end{frame}
-
-\begin{frame}{\textit{Quasi certo} VS \textit{Certo}}
-    Si noti che probabilità 1 non vuol dire certezza. Infatti la probabilità di terminazione è pari a 1 solo dopo un numero \textbf{infinito} di stage \textit{s}. Quindi possiamo solo essere sicuri che prima o poi accadra solo se supponiamo di poter aspettare tempi infiniti.
-    
-\end{frame}
-
-\begin{frame}{Un esecuzione (finita) senza decisioni}
-    Possiamo immaginare un'esecuzione fair del BenOr relativa a $3f+1$ in cui nessuno di questi decide; affinche ciò accada in ogni stage \textit{s} deve accadere che:
-    \begin{itemize}
-        \item \textit{m} processi, con $f+1 \leq m \leq 2f$, presentano $x = 0$ mentre i rimanenti hanno $x = 1$.
-        \item Al termine della fase di Report, tutti i processi avranno $y = null$ %spiegare a voce perchè
-        \item Nella fase di Propose assegneranno a \textit{x} un nuovo valore randomico.
-        \item \textit{m} processi assegnano $x = 0$ e i rimanenti assegnano $x = 1$
-    \end{itemize}
-    Nello stage $s + 1$ si ritorna quindi nella situazione iniziale, che potrebbe pertanto ripetersi un numero considerevole di volte.
-\end{frame}
-
 
 {
     \beamertemplatenavigationsymbolsempty
