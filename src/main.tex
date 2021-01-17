@@ -195,9 +195,9 @@
 
     \begin{frame}{SimpleBCastSim - 1}
         \begin{itemize}[<+->]
-            \item In questo caso, per ogni \textit{i} con $1 \leq i \leq n$, il sistema \textit{B} ha una variabile condivisa $x(i)$ a singolo scrittore/multipli lettori.
-            \newline La variabile è scrivibile da \textit{i} e leggibile da tutti i processi (\textit{i} incluso), e contiene una coda di messaggi, inizialmente vuota.
-            \item Come con SimpleSRSim, un processo \textit{i} di \textit{B} simula direttamente il processo $P_{i}$ di \textit{A}.
+            \item In questo caso, per ogni $P_{i}$ con $1 \leq i \leq n$, il sistema \textit{B} ha una variabile condivisa $x(i)$ a singolo scrittore/multipli lettori.
+            \newline La variabile è scrivibile da $P_{i}$ e leggibile da tutti i processi ($P_{i}$ incluso), e contiene una coda di messaggi, inizialmente vuota.
+            \item Come con SimpleSRSim, un processo $P_{i}$ di \textit{B} simula direttamente lo stesso i-esimo processo di \textit{A}.
         \end{itemize}
     \end{frame}
 
