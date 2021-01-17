@@ -533,21 +533,6 @@
     \end{enumerate}
 \end{frame}
 
-\begin{frame}{\textit{Quasi certo} VS \textit{Certo}}
-    Si noti che probabilità 1 non vuol dire certezza. In seguito dimostreremo che la probabilità di terminazione tende a 1 solo dopo un numero \textbf{infinito} di stage \textit{s}. Quindi possiamo solo essere sicuri che prima o poi accadrà solo se supponiamo di poter aspettare tempi infiniti.
-\end{frame}
-
-\begin{frame}{Un esecuzione (finita) senza decisioni}
-    Possiamo immaginare un'esecuzione fair del BenOr relativa a $3f+1$ in cui nessuno di questi decide; affinche ciò accada in ogni stage \textit{s} deve accadere che:
-    \begin{itemize}
-        \item \textit{m} processi, con $f+1 \leq m \leq 2f$, presentano $x = 0$ mentre i rimanenti hanno $x = 1$.
-        \item Al termine della fase di Report, tutti i processi avranno $y = null$ %spiegare a voce perchè
-        \item Nella fase di Propose assegneranno a \textit{x} un nuovo valore randomico.
-        \item \textit{m} processi assegnano $x = 0$ e i rimanenti assegnano $x = 1$
-    \end{itemize}
-    Nello stage $s + 1$ si ritorna quindi nella situazione iniziale, che potrebbe pertanto ripetersi un numero considerevole di volte.
-\end{frame}
-
 \subsection{Dimostrazione terminazione}
 \iffalse
 \begin{frame}{Confine superiore al tempo di completamento di uno stage}
@@ -562,13 +547,23 @@
 \fi
 
 \begin{frame}{Probabilità di terminazione}
-    \begin{block}{Lemma}
-        Per ogni stage \textit{s}, tutti i processi decideranno entro lo stage successivo $s+1$ con una probabilità \textit{p} tale che:
-        \begin{center}
-        \huge
-            $p \geq 1 - (1-\frac{1}{2^n})^s$
-        \end{center}
-    \end{block}
+    \begin{textblock*}{0.95\textwidth}(8mm, 12mm)
+        \begin{block}{Lemma}
+            Per ogni stage \textit{s}, tutti i processi decideranno entro lo stage successivo $s+1$ con una probabilità \textit{p} tale che:
+            \begin{center}
+            \huge
+                $p \geq 1 - (1-\frac{1}{2^n})^s$
+            \end{center}
+        \end{block}
+    \end{textblock*}
+    \begin{textblock*}{0.5\textwidth}(35mm, 50mm)
+        \begin{block}{}
+            \begin{figure}
+                \centering
+                \includegraphics[scale = 0.25]{funzione_p_piccola.png}
+            \end{figure}
+        \end{block}
+    \end{textblock*}
 \end{frame}
 
 \begin{frame}{Dimostrazione (1/8)}
@@ -617,9 +612,9 @@
 \begin{frame}{Dimostrazione (5/8): Due valori buoni}
     \begin{enumerate}
         \setcounter{enumi}{8}
-        \item<1-> Nel caso in cui \underline{$P_{i}$ ha ricevuto due valori \textit{buoni}}, ogni altro processo $P_{j}$ avrà ricevuto almeno 1 messaggio del tipo ("R", s, 0) e almeno 1 messaggio del tipo ("R", s, 0).
+        \item<1-> Nel caso in cui \underline{$P_{i}$ ha ricevuto due valori \textit{buoni}}, ogni altro processo $P_{j}$ avrà ricevuto almeno 1 messaggio del tipo ("R", s, 0) e almeno 1 messaggio del tipo ("R", s, 1).
         \item<2-> Non appena $P_{j}$ avrà ricevuto $n - f$ messaggi ("R", s, *), non potrà inviare un nè messagi del tipo ("P", s, 0), nè messagi del tipo ("P", s, 1).
-        \item<3-> Pertanto ogni messaggio ("P", s, *) che verrà inviato conterrà o il valore \textit{null}.
+        \item<3-> Pertanto ogni messaggio inviato sarà del tipo ("P", s, \textit{null}).
     \end{enumerate}
 \end{frame}
 
@@ -670,6 +665,21 @@
     \end{quote}
     Questo vuol dire che al crescere del numero di stage la probabilità di decidere un valore entro lo stage $s+1$. \newline \newline
     All'infinito questo valore diventa pari a 1. Ovvero si ha che con probabilità 1, prima o poi tutti i processi decidono.
+\end{frame}
+
+\begin{frame}{\textit{Quasi certo} VS \textit{Certo}}
+    Si noti che probabilità 1 non vuol dire certezza. La probabilità di terminazione tende a 1 solo dopo un numero \textbf{infinito} di stage \textit{s}. Quindi possiamo solo essere sicuri che prima o poi accadrà solo se supponiamo di poter aspettare tempi infiniti.
+\end{frame}
+
+\begin{frame}{Un esecuzione (finita) senza decisioni}
+    Possiamo immaginare un'esecuzione fair del BenOr relativa a $3f+1$ in cui nessuno di questi decide; affinche ciò accada in ogni stage \textit{s} deve accadere che:
+    \begin{itemize}
+        \item \textit{m} processi, con $f+1 \leq m \leq 2f$, presentino $x = 0$ mentre i rimanenti abbiano $x = 1$.
+        \item Al termine della fase di Report, tutti i processi abbiano $y = null$ %spiegare a voce perchè
+        \item Nella fase di Propose venga assegnato a \textit{x} un nuovo valore randomico.
+        \item \textit{m} processi assegnino $x = 0$ e i rimanenti assegnino $x = 1$
+    \end{itemize}
+    Nello stage $s + 1$ si ritorna quindi nella situazione iniziale, che potrebbe pertanto ripetersi un numero considerevole di volte.
 \end{frame}
 
 {
